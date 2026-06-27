@@ -123,22 +123,22 @@ Este ejemplo controla la pestaña vanilla de ingredientes y agrega una página c
 
 La documentación completa está en la carpeta `docs/`:
 
-* [Conceptos](docs/CONCEPTS.md)
+* [Conceptos](docs/es_es/CONCEPTS.md)
   Explica la terminología principal de CTL: controlled tabs, layouts, pages, sections, entries, headers, banners, prioridades y fallback pages.
 
-* [API](docs/API.md)
+* [API](docs/es_es/API.md)
   Guía para developers que quieren crear plugins de CTL, controlar tabs y agregar páginas, secciones o entries.
 
-* [Visuales](docs/VISUALS.md)
+* [Visuales](docs/es_es/VISUALS.md)
   Explica headers, banners, archivos JSON visuales, texturas, colores, sombras y animaciones.
 
-* [Fallback Pages](docs/FALLBACK.md)
+* [Fallback Pages](docs/es_es/FALLBACK.md)
   Explica cómo CTL preserva items añadidos a tabs vanilla por mods que no usan CTL directamente.
 
-* [Configuración](docs/CONFIG.md)
+* [Configuración](docs/es_es/CONFIG.md)
   Documenta las opciones públicas de configuración.
 
-* [Ejemplos](docs/EXAMPLES.md)
+* [Ejemplos](docs/es_es/EXAMPLES.md)
   Snippets listos para copiar, adaptar y usar.
 
 ## Alcance de la API pública
