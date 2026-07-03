@@ -1,8 +1,8 @@
 {
   "label_color": "#99000000",
   "text_align": "left",
-  "text_bottom_color": "#FF008B96",
+  "text_bottom_color": "#FF3F8F9D",
   "text_shadow": true,
-  "text_top_color": "#FF79F2E6",
+  "text_top_color": "#FF73ADB8",
   "texture": "tab_layouts:textures/gui/vanilla/colored_blocks/cyan.png"
 }

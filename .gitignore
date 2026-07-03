@@ -1,5 +1,5 @@
 ### Gradle ###
-.gradle
+.gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/**/build/
@@ -14,23 +14,29 @@ out/
 
 .run/
 
+### Archives / accidental uploads ###
+*.zip
+*.rar
+*.7z
+
 ### Eclipse ###
-.apt_generated
+.apt_generated/
 .classpath
 .eclipse/
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
-.sts4-cache
+.sts4-cache/
 bin/
 !**/src/**/bin/
 
 ### VS Code ###
 .vscode/
 
-### Mac OS ###
+### OS ###
 .DS_Store
+Thumbs.db
 
 ### Minecraft Modding ###
 run/

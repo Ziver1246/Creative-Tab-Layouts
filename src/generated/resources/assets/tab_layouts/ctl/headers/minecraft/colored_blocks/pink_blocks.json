@@ -1,8 +1,8 @@
 {
   "label_color": "#99000000",
   "text_align": "left",
-  "text_bottom_color": "#FFFF6FAE",
+  "text_bottom_color": "#FFC15B81",
   "text_shadow": true,
-  "text_top_color": "#FFFFC0D9",
+  "text_top_color": "#FFE293B1",
   "texture": "tab_layouts:textures/gui/vanilla/colored_blocks/pink.png"
 }

@@ -1,8 +1,8 @@
 {
   "label_color": "#99000000",
   "text_align": "left",
-  "text_bottom_color": "#FF6B3A1E",
+  "text_bottom_color": "#FF7D5F48",
   "text_shadow": true,
-  "text_top_color": "#FFD69A5B",
+  "text_top_color": "#FFA08A79",
   "texture": "tab_layouts:textures/gui/vanilla/colored_blocks/brown.png"
 }

@@ -1,8 +1,8 @@
 {
   "label_color": "#99000000",
   "text_align": "left",
-  "text_bottom_color": "#FFC02DCC",
+  "text_bottom_color": "#FF982B8F",
   "text_shadow": true,
-  "text_top_color": "#FFFF9CFF",
+  "text_top_color": "#FFC36EBC",
   "texture": "tab_layouts:textures/gui/vanilla/colored_blocks/magenta.png"
 }
