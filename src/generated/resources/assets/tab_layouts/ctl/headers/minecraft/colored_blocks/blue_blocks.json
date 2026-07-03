@@ -1,0 +1,8 @@
+{
+  "label_color": "#99000000",
+  "text_align": "left",
+  "text_bottom_color": "#FF1E3FAE",
+  "text_shadow": true,
+  "text_top_color": "#FF7FA8FF",
+  "texture": "tab_layouts:textures/gui/vanilla/colored_blocks/blue.png"
+}
