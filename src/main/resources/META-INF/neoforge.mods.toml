@@ -4,10 +4,11 @@ license="LGPL-2.1-or-later"
 
 [[mods]]
 modId="tab_layouts"
-version="1.0.0"
+version="${mod_version}"
 displayName="Creative Tab Layouts"
 logoFile="logo.png"
 authors="Ziver1246"
+updateJSONURL="https://raw.githubusercontent.com/Ziver1246/Ziver1246-Modding/main/Creative_Tab_Layouts/creative_tab_layouts-updates.json"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/creative-tab-layouts"
 description='''
 Adds page-based organization to Creative Tabs, allowing modders to group items into structured sections with visual headers, banner pages, custom layouts, JSON-driven visuals, and optional sprite animations.
@@ -22,13 +23,13 @@ config="tab_layouts.mixins.json"
 [[dependencies.tab_layouts]]
 modId="neoforge"
 mandatory=true
-versionRange="[21.1.210,)"
+versionRange="[21.1.230,)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.tab_layouts]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.21.1,)"
+versionRange="[1.21.1]"
 ordering="NONE"
 side="BOTH"
