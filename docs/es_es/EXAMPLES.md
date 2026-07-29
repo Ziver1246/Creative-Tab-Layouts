@@ -67,14 +67,14 @@ import com.ziver.tab_layouts.api.CtlVanillaTabs;
 import net.minecraft.world.item.Items;
 ```
 
-## Integración opcional con contributeTab
+## Integración opcional con contribute
 
-Usa `contributeTab` si tu mod no debería forzar una tab a quedar controlada.
+Usa `contribute` si tu mod no debería forzar una tab a quedar controlada.
 
 ```java
 @Override
 public void register(CtlPluginContext ctx) {
-    ctx.contributeTab(CtlVanillaTabs.INGREDIENTS).ifPresent(tab -> {
+    ctx.contribute(CtlVanillaTabs.INGREDIENTS).ifPresent(tab -> {
         tab.addonPage(id("example_extra_materials"), page -> {
             page.add(Items.AMETHYST_SHARD);
         });
@@ -83,6 +83,30 @@ public void register(CtlPluginContext ctx) {
 ```
 
 Si la tab no está controlada, no hace nada.
+
+## Agrupar tabs existentes como subtabs
+
+```java
+@Override
+public void register(CtlPluginContext ctx) {
+    ctx.subtab(EXAMPLE_ADDON_TAB, EXAMPLE_PARENT_TAB);
+    ctx.subtabs(EXAMPLE_PARENT_TAB, SECOND_ADDON_TAB, THIRD_ADDON_TAB);
+}
+```
+
+Las tabs hijas conservan sus layouts originales.
+
+## Crear una subtab controlada
+
+```java
+@Override
+public void register(CtlPluginContext ctx) {
+    ctx.controlSubtab(EXAMPLE_ADDON_TAB, EXAMPLE_PARENT_TAB)
+            .page(id("machines"), page -> {
+                page.add(ModItems.MACHINE.get());
+            });
+}
+```
 
 ## Crear una page con entries directas
 
@@ -390,6 +414,28 @@ Ejemplo JSON:
   "texture": "examplemod:textures/gui/ctl/banners/ingredients.png"
 }
 ```
+
+## Leer un layout resuelto
+
+```java
+CtlApiExtensions.getTabView(tabId, registries, originalItems).ifPresent(tab -> {
+    for (CtlApiExtensions.PageView page : tab.pages()) {
+        page.entries().forEach(this::addItem);
+        page.sections().forEach(section -> section.items().forEach(this::addItem));
+    }
+});
+```
+
+La sobrecarga que recibe `originalItems` también puede incluir fallback pages.
+
+## Renderizar externamente un header de CTL
+
+```java
+boolean rendered = CtlApiExtensions.Client.renderSectionHeader(graphics, tabId, page.index(), section.id(), x, y, width, height, hovered, mouseX, mouseY);
+if (!rendered) renderDefaultHeader(graphics, section.title(), x, y, width, height);
+```
+
+Mantén las llamadas gráficas en código exclusivamente cliente. Consulta [EXTENSIONS.md](./EXTENSIONS.md) para ver la API completa.
 
 ## Header JSON básico
 

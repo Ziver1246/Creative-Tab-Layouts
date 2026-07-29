@@ -7,7 +7,7 @@ import net.minecraft.world.level.ItemLike;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public interface CtlPageBuilder {
+public interface CtlPageBuilder extends CtlPageContributionBuilder {
 
     CtlPageBuilder add(ItemLike... items);
 
@@ -49,9 +49,12 @@ public interface CtlPageBuilder {
 
     CtlPageBuilder section(ResourceLocation sectionId, long priority, Consumer<CtlSectionBuilder> builder);
 
+    @Override
     CtlPageBuilder addonSection(ResourceLocation sectionId, Consumer<CtlSectionBuilder> builder);
 
+    @Override
     CtlPageBuilder addonSection(ResourceLocation sectionId, long priority, Consumer<CtlSectionBuilder> builder);
 
+    @Override
     CtlPageBuilder contributeSection(ResourceLocation sectionId, Consumer<CtlSectionBuilder> builder);
 }

@@ -5,7 +5,6 @@ import com.ziver.tab_layouts.client.screen.CtlConfigScreen;
 import com.ziver.tab_layouts.internal.plugin.CtlBuiltinPlugins;
 import com.ziver.tab_layouts.internal.plugin.CtlPluginLoader;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -20,6 +19,7 @@ import org.slf4j.LoggerFactory;
 public final class CreativeTabLayouts {
 
     public static final String MOD_ID = "tab_layouts";
+    public static final String CTO_MOD_ID = "tab_organizer";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static ResourceLocation id(String path) {
@@ -30,7 +30,7 @@ public final class CreativeTabLayouts {
         LOGGER.info("[CTL] Initializing Creative Tab Layouts");
         modEventBus.addListener(this::commonSetup);
 
-        if (FMLEnvironment.dist == Dist.CLIENT) {
+        if (FMLEnvironment.dist.isClient()) {
             modContainer.registerExtensionPoint(IConfigScreenFactory.class, (mod, parent) -> new CtlConfigScreen(parent));
         }
 

@@ -13,6 +13,7 @@ Minecraft creative tabs are simple item lists. This works well for small mods, b
 Creative Tab Layouts can organize a tab into:
 
 * Pages
+* Subtabs for grouping related creative tabs
 * Sections
 * Visual headers
 * Page banners
@@ -38,7 +39,9 @@ This means:
 ## Features
 
 * Page-based creative tab organization
+* Subtab groups with a scrollable side panel
 * Section-based item grouping
+* Collapsible section headers
 * Visual headers for sections
 * Visual banners for pages
 * JSON-driven visuals
@@ -47,6 +50,8 @@ This means:
 * Fallback pages for external mod items
 * Priority-based ordering
 * Public API for mods and addons
+* Resolved layout snapshots and reusable visuals for external interfaces
+* In-game client configuration screen
 * Datagen support for CTL visuals
 * Built-in vanilla tab layouts
 * Developer visual debug tools
@@ -74,6 +79,7 @@ Extended documentation is available in the `docs/` directory:
 * [Documentation contents](docs/en_us/DOCS_CONTENT.md)
 * [Concepts](docs/en_us/CONCEPTS.md)
 * [API](docs/en_us/API.md)
+* [Extensions](docs/en_us/EXTENSIONS.md)
 * [Visuals](docs/en_us/VISUALS.md)
 * [Fallback Pages](docs/en_us/FALLBACK.md)
 * [Config](docs/en_us/CONFIG.md)

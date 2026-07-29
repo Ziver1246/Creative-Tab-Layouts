@@ -1,6 +1,7 @@
 package com.ziver.tab_layouts.internal.layout;
 
 import com.ziver.tab_layouts.api.layout.CtlPageBuilder;
+import com.ziver.tab_layouts.api.layout.CtlPageContributionBuilder;
 import com.ziver.tab_layouts.api.layout.CtlSectionBuilder;
 import com.ziver.tab_layouts.api.layout.CtlTabBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -71,7 +72,7 @@ public final class CtlTabLayout implements CtlTabBuilder {
     }
 
     @Override
-    public CtlTabBuilder contributePage(ResourceLocation pageId, Consumer<CtlPageBuilder> builder) {
+    public CtlTabBuilder contributePage(ResourceLocation pageId, Consumer<CtlPageContributionBuilder> builder) {
         Objects.requireNonNull(pageId, "pageId");
         Objects.requireNonNull(builder, "builder");
 

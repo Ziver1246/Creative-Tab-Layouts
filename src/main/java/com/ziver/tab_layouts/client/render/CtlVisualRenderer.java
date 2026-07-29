@@ -22,20 +22,22 @@ import net.neoforged.fml.loading.FMLEnvironment;
 public final class CtlVisualRenderer {
     private CtlVisualRenderer() {}
 
-    public static boolean renderHeader(GuiGraphics graphics, Font font, ResourceLocation tabId, int pageIndex, CtlSection section, int x, int y, int width, int height, boolean hovered, int mouseX, int mouseY) {
+    public static boolean renderHeader(GuiGraphics graphics, Font font, ResourceLocation animationContext, ResourceLocation tabId, int pageIndex, CtlSection section, int x, int y, int width, int height, boolean hovered, int mouseX, int mouseY, boolean allowDebug) {
         CtlHeaderVisual visual = CtlVisualRegistry.header(section.id());
 
         if (visual == null) {
-            renderHeaderDebugTooltip(graphics, font, section.id(), hovered, mouseX, mouseY);
+            if (allowDebug) {
+                renderHeaderDebugTooltip(graphics, font, section.id(), hovered, mouseX, mouseY);
 
-            if (CtlVisualDebugRegistry.header(section.id()) == null) {
-                renderMissingHeaderDebugTooltip(graphics, font, section.id(), hovered, mouseX, mouseY);
+                if (CtlVisualDebugRegistry.header(section.id()) == null) {
+                    renderMissingHeaderDebugTooltip(graphics, font, section.id(), hovered, mouseX, mouseY);
+                }
             }
 
             return false;
         }
 
-        blitAnimatedHeader(graphics, tabId, pageIndex, section.id(), visual.texture(), visual.animation(), x, y, width, height, hovered);
+        blitAnimatedHeader(graphics, animationContext, tabId, pageIndex, section.id(), visual.texture(), visual.animation(), x, y, width, height, hovered);
 
         if (!visual.hideText()) {
             if (visual.labelColor() != 0) {
@@ -45,26 +47,33 @@ public final class CtlVisualRenderer {
             renderHeaderText(graphics, font, section.title(), x, y, width, height, visual);
         }
 
-        renderHeaderDebugTooltip(graphics, font, section.id(), hovered, mouseX, mouseY);
+        if (allowDebug) {
+            renderHeaderDebugTooltip(graphics, font, section.id(), hovered, mouseX, mouseY);
+        }
 
         return true;
     }
 
-    public static boolean renderBanner(GuiGraphics graphics, ResourceLocation tabId, int pageIndex, CtlPage page, int x, int y, int width, int height, boolean hovered, int mouseX, int mouseY) {
+    public static boolean renderBanner(GuiGraphics graphics, ResourceLocation animationContext, ResourceLocation tabId, int pageIndex, CtlPage page, int x, int y, int width, int height, boolean hovered, int mouseX, int mouseY, boolean allowDebug) {
         CtlBannerVisual visual = CtlVisualRegistry.banner(page.id());
 
         if (visual == null) {
-            renderBannerDebugTooltip(graphics, page.id(), hovered, mouseX, mouseY);
+            if (allowDebug) {
+                renderBannerDebugTooltip(graphics, page.id(), hovered, mouseX, mouseY);
 
-            if (CtlVisualDebugRegistry.banner(page.id()) == null) {
-                renderMissingBannerDebugTooltip(graphics, page.id(), hovered, mouseX, mouseY);
+                if (CtlVisualDebugRegistry.banner(page.id()) == null) {
+                    renderMissingBannerDebugTooltip(graphics, page.id(), hovered, mouseX, mouseY);
+                }
             }
 
             return false;
         }
 
-        blitAnimatedBanner(graphics, tabId, pageIndex, page.id(), visual.texture(), visual.animation(), x, y, width, height, hovered);
-        renderBannerDebugTooltip(graphics, page.id(), hovered, mouseX, mouseY);
+        blitAnimatedBanner(graphics, animationContext, tabId, pageIndex, page.id(), visual.texture(), visual.animation(), x, y, width, height, hovered);
+
+        if (allowDebug) {
+            renderBannerDebugTooltip(graphics, page.id(), hovered, mouseX, mouseY);
+        }
 
         return true;
     }
@@ -102,15 +111,15 @@ public final class CtlVisualRenderer {
         };
     }
 
-    private static void blitAnimatedHeader(GuiGraphics graphics, ResourceLocation tabId, int pageIndex, ResourceLocation sectionId, ResourceLocation texture, CtlSpriteAnimation animation, int x, int y, int width, int height, boolean hovered) {
+    private static void blitAnimatedHeader(GuiGraphics graphics, ResourceLocation animationContext, ResourceLocation tabId, int pageIndex, ResourceLocation sectionId, ResourceLocation texture, CtlSpriteAnimation animation, int x, int y, int width, int height, boolean hovered) {
         long nowMillis = Util.getMillis();
-        CtlAnimationState state = CtlAnimationStateRegistry.header(tabId, pageIndex, sectionId);
+        CtlAnimationState state = CtlAnimationStateRegistry.header(animationContext, tabId, pageIndex, sectionId);
         blitAnimated(graphics, state, nowMillis, texture, animation, x, y, width, height, hovered);
     }
 
-    private static void blitAnimatedBanner(GuiGraphics graphics, ResourceLocation tabId, int pageIndex, ResourceLocation pageId, ResourceLocation texture, CtlSpriteAnimation animation, int x, int y, int width, int height, boolean hovered) {
+    private static void blitAnimatedBanner(GuiGraphics graphics, ResourceLocation animationContext, ResourceLocation tabId, int pageIndex, ResourceLocation pageId, ResourceLocation texture, CtlSpriteAnimation animation, int x, int y, int width, int height, boolean hovered) {
         long nowMillis = Util.getMillis();
-        CtlAnimationState state = CtlAnimationStateRegistry.banner(tabId, pageIndex, pageId);
+        CtlAnimationState state = CtlAnimationStateRegistry.banner(animationContext, tabId, pageIndex, pageId);
         blitAnimated(graphics, state, nowMillis, texture, animation, x, y, width, height, hovered);
     }
 

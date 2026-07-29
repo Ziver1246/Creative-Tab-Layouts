@@ -7,6 +7,7 @@
     "CreativeModeTabMixin"
   ],
   "client": [
+    "CreativeModeInventoryScreenAccessor",
     "CreativeModeInventoryScreenMixin",
     "ItemPickerMenuAccessor",
     "ItemPickerMenuMixin",

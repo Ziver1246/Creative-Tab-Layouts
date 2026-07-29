@@ -2,7 +2,8 @@
 
 Este documento explica el sistema visual público de **Creative Tab Layouts** (CTL).
 
-> Ejemplos completos: [EXAMPLES.md](./EXAMPLES.md)  
+> Ejemplos: [EXAMPLES.md](./EXAMPLES.md)  
+> Reutilizar visuales en interfaces externas: [EXTENSIONS.md](./EXTENSIONS.md)  
 > API de datagen: [API.md#datagen-api](./API.md#datagen-api)
 
 CTL permite asociar archivos JSON visuales a elementos del layout:

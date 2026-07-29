@@ -12,8 +12,13 @@ The current version includes:
 ```text
 - CTL plugin API.
 - @CtlPlugin and ICtlPlugin.
-- controlTab and contributeTab.
+- controlTab, controlSubtab, subtab, subtabs, and contribute.
 - Layouts with pages and sections.
+- Subtab groups and side-panel navigation.
+- Collapsible sections.
+- Resolved layout extension API for external interfaces.
+- External rendering helpers for headers and banners.
+- In-game client configuration screen.
 - Overview pages with banners.
 - Headers for sections.
 - Base pages and addon pages.
@@ -85,19 +90,6 @@ Useful improvements for visual debug:
 - Show current frame in animations.
 - Show expected texture size.
 - Copy ids/paths from the UI.
-```
-
-## Manual page organization
-
-One improvement line for modpacks is exposing a public workflow for manual page order.
-
-Goals:
-
-```text
-- Reorder pages per tab.
-- Reset order per tab.
-- Save manual order.
-- Make adjustments easier for modpack creators.
 ```
 
 ## Advanced fallback

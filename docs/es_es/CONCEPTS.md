@@ -34,6 +34,12 @@ ctx.contributeTab(tabId)
 
 `contributeTab` solo devuelve una tab si ya estaba controlada. No fuerza una tab a quedar controlada.
 
+## Subtab
+
+Una subtab es una creative tab existente agrupada bajo otra creative tab. La parent permanece como tab superior visible y CTL muestra sus hijas directas mediante un panel lateral.
+
+Una subtab puede conservar su layout original de Minecraft o estar controlada por CTL. La parent no necesita estar controlada. Los grupos de subtabs no se anidan.
+
 ## Layout
 
 Un **layout** es la estructura completa de una controlled tab.
@@ -257,6 +263,10 @@ padding hasta completar fila
 Next section header
 ...
 ```
+
+## Section colapsable
+
+Los headers de sección pueden colapsarse desde el creative inventory. Al colapsar se ocultan las entries de la sección y su header permanece visible. Es un estado de navegación de la sesión actual, no información del layout registrada por un plugin.
 
 ## Header
 

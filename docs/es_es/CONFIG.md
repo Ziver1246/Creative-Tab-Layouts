@@ -14,6 +14,8 @@ Las opciones actuales son:
 
 ```text
 enableBuiltinVanillaLayouts
+enableSubtabs
+showCreativeConfigButton
 enableDeveloperVisualDebug
 enableFallbackPages
 fallbackMode
@@ -44,6 +46,30 @@ Cambios:
 Aplican en runtime.
 Reabre el creative inventory si necesitas refrescar la vista.
 ```
+
+## enableSubtabs
+
+Default:
+
+```text
+true
+```
+
+Activa el panel lateral de subtabs y la navegación agrupada. Cuando se desactiva, las subtabs registradas vuelven a mostrarse como creative tabs independientes normales.
+
+## showCreativeConfigButton
+
+Default:
+
+```text
+true
+```
+
+Muestra el botón de configuración de CTL en el creative inventory. Ocultarlo no desactiva CTL ni reinicia sus opciones. Las mismas opciones cliente siguen disponibles en el archivo de config.
+
+## Pantalla de configuración integrada
+
+El botón del creative inventory abre la pantalla de configuración cliente de CTL. Los cambios se guardan al modificar una opción. Las opciones que dependen de otra, como `fallbackMode`, quedan deshabilitadas visualmente mientras su función principal está desactivada.
 
 ## enableDeveloperVisualDebug
 

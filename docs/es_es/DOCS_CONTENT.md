@@ -101,6 +101,20 @@ lang keys
 datagen API
 ```
 
+### EXTENSIONS.md
+
+Referencia avanzada de integración para `CtlApiExtensions`:
+
+```text
+- snapshots inmutables de layouts resueltos
+- consultas de grupos de subtabs
+- vistas con soporte de fallback
+- render externo de headers y banners
+- contextos de animación y control del debug visual
+```
+
+Úsalo al representar layouts de CTL fuera del creative inventory.
+
 ### EXAMPLES.md
 
 Ejemplos completos y copiables.

@@ -11,14 +11,31 @@
   "screen.tab_layouts.missing_json_config": "ERROR: Fuente JSON no encontrada",
   "screen.tab_layouts.empty_json_config": "INFO: La fuente JSON está vacía",
   "screen.tab_layouts.invalid_json_config": "ERROR: Fuente JSON inválida",
-  "screen.tab_layouts.incomplete_json_config": "INFO: La fuente JSON no tiene campo texture",
+  "screen.tab_layouts.incomplete_json_config": "INFO: La fuente JSON no tiene campo «texture»",
 
-  "screen.tab_layouts.config.fallback_pages.enabled": "Páginas fallback: Activadas",
-  "screen.tab_layouts.config.fallback_pages.disabled": "Páginas fallback: Desactivadas",
+  "screen.tab_layouts.config.builtin_vanilla_layouts": "Layouts vanilla integrados",
+  "screen.tab_layouts.config.builtin_vanilla_layouts.tooltip": "Activa los diseños incluidos de CTL para determinadas pestañas creativas de Minecraft vanilla. Los plugins externos aún pueden controlar sus propias pestañas de forma independiente.",
 
-  "screen.tab_layouts.config.fallback_mode": "Modo de fallback",
-  "screen.tab_layouts.config.fallback_mode.by_mod_section": "Una página Mods, secciones por mod",
-  "screen.tab_layouts.config.fallback_mode.by_mod_page": "Una página por mod",
+  "screen.tab_layouts.config.subtabs": "Subpestañas",
+  "screen.tab_layouts.config.subtabs.tooltip": "Agrupa las subpestañas registradas en el inventario creativo. Al desactivarse, permanecen como pestañas creativas normales e independientes.",
+
+  "screen.tab_layouts.config.creative_button": "Panel lateral del menú creativo",
+  "screen.tab_layouts.config.creative_button.tooltip": "Muestra el acceso al organizador en el panel lateral del inventario creativo.",
+
+  "screen.tab_layouts.config.fallback_pages": "Páginas de respaldo",
+  "screen.tab_layouts.config.fallback_pages.tooltip": "Conserva los objetos de mods no reclamados añadiendo contenido de respaldo a las pestañas controladas por CTL.",
+
+  "screen.tab_layouts.config.fallback_mode": "Organización de respaldo",
+  "screen.tab_layouts.config.fallback_mode.tooltip": "Controla cómo se agrupan los objetos de mods no reclamados dentro del contenido de respaldo.",
+
+  "screen.tab_layouts.config.fallback_mode.by_mod_section": "Secciones por mod",
+  "screen.tab_layouts.config.fallback_mode.by_mod_section.tooltip": "Crea una única página final llamada \"Mods\" con una sección separada para cada mod.",
+
+  "screen.tab_layouts.config.fallback_mode.by_mod_page": "Página por mod",
+  "screen.tab_layouts.config.fallback_mode.by_mod_page.tooltip": "Crea una página de respaldo final separada para cada mod.",
+
+  "screen.tab_layouts.config.dev_visual_debug": "Depuración visual",
+  "screen.tab_layouts.config.dev_visual_debug.tooltip": "Muestra metadatos e información de depuración para los encabezados y banners de CTL.",
 
 
 
@@ -36,27 +53,27 @@
   "tabpage.tab_layouts.minecraft.combat.special_gear": "Equipo especial",
   "tabpage.tab_layouts.minecraft.combat.projectiles": "Proyectiles",
 
-  "tabpage.tab_layouts.minecraft.colored_blocks.neutral": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.white": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.light_gray": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.gray": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.black": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.brown": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.red": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.orange": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.yellow": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.lime": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.green": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.cyan": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.light_blue": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.blue": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.purple": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.magenta": "Colored Blocks",
-  "tabpage.tab_layouts.minecraft.colored_blocks.pink": "Colored Blocks",
+  "tabpage.tab_layouts.minecraft.colored_blocks.neutral": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.white": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.light_gray": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.gray": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.black": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.brown": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.red": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.orange": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.yellow": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.lime": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.green": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.cyan": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.light_blue": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.blue": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.purple": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.magenta": "Bloques de colores",
+  "tabpage.tab_layouts.minecraft.colored_blocks.pink": "Bloques de colores",
 
 
 
-  "tabsection.tab_layouts.minecraft.colored_blocks.neutral_blocks": "Neutral Blocks",
+  "tabsection.tab_layouts.minecraft.colored_blocks.neutral_blocks": "Bloques neutrales",
   "tabsection.tab_layouts.minecraft.colored_blocks.white_blocks": "Bloques blancos",
   "tabsection.tab_layouts.minecraft.colored_blocks.light_gray_blocks": "Bloques gris claro",
   "tabsection.tab_layouts.minecraft.colored_blocks.gray_blocks": "Bloques grises",

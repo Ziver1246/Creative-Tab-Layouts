@@ -4,7 +4,8 @@ Este documento describe la API pública de **Creative Tab Layouts** (CTL) según
 
 > Ejemplos completos y copiables: [EXAMPLES.md](./EXAMPLES.md)  
 > Conceptos base: [CONCEPTS.md](./CONCEPTS.md)  
-> Visuales JSON y datagen: [VISUALS.md](./VISUALS.md)
+> Visuales JSON y datagen: [VISUALS.md](./VISUALS.md)  
+> Layouts resueltos y render externo: [EXTENSIONS.md](./EXTENSIONS.md)
 
 ## Paquetes públicos
 
@@ -30,8 +31,11 @@ No dependas de paquetes `internal`, clases builtin vanilla, mixins, renderers, r
    │  ├─ addonPage(pageId, ...)
    │  ├─ contributePage(pageId, ...)
    │  └─ contributeSection(pageId, sectionId, ...)
-   └─ ctx.contributeTab(tabId)
-      └─ Optional<CtlTabBuilder>
+   ├─ ctx.controlSubtab(tabId, parentTabId)
+   ├─ ctx.subtab(tabId, parentTabId)
+   ├─ ctx.subtabs(parentTabId, tabIds...)
+   └─ ctx.contribute(tabId)
+      └─ Optional<CtlContributionBuilder>
 ```
 
 Dentro de una page:
@@ -136,7 +140,14 @@ Métodos públicos:
 
 ```java
 CtlTabBuilder controlTab(ResourceLocation tabId);
+CtlTabBuilder controlSubtab(ResourceLocation tabId, ResourceLocation parentTabId);
 
+void subtab(ResourceLocation tabId, ResourceLocation parentTabId);
+void subtabs(ResourceLocation parentTabId, ResourceLocation... tabIds);
+
+Optional<CtlContributionBuilder> contribute(ResourceLocation tabId);
+
+@Deprecated(forRemoval = true)
 Optional<CtlTabBuilder> contributeTab(ResourceLocation tabId);
 
 void info(String message);
@@ -159,19 +170,59 @@ Cuando una tab está controlada por CTL, su contenido visible se construye desde
 
 La creative tab original de Minecraft sigue existiendo.
 
-### contributeTab
+### contribute
 
-Devuelve la tab solo si ya está controlada.
+Devuelve un builder limitado a contribuciones solo cuando la tab ya está controlada. No fuerza que una tab no controlada pase a estar controlada.
 
 ```java
-ctx.contributeTab(CtlVanillaTabs.INGREDIENTS).ifPresent(tab -> {
+ctx.contribute(CtlVanillaTabs.INGREDIENTS).ifPresent(tab -> {
     tab.addonPage(id("extra_materials"), page -> {
         page.add(Items.AMETHYST_SHARD);
     });
 });
 ```
 
-Úsalo para compat integrations que no deberían forzar una tab a quedar controlada.
+`CtlContributionBuilder` expone únicamente operaciones destinadas a integraciones de compatibilidad: `addonPage`, `contributePage` y `contributeSection`. No expone operaciones del propietario como `overview` o la creación de una `page` base.
+
+`contributeTab` está deprecated desde 1.2.0 y se eliminará en 2.0.0. Las integraciones nuevas deben usar `contribute`.
+
+### controlSubtab
+
+Controla una creative tab con CTL y la registra como subtab de otra creative tab.
+
+```java
+ctx.controlSubtab(EXAMPLE_ADDON_TAB, EXAMPLE_PARENT_TAB)
+        .page(id("machines"), page -> {
+            page.add(ModItems.MACHINE.get());
+        });
+```
+
+La parent tab no necesita estar controlada por CTL.
+
+### subtab y subtabs
+
+Registran creative tabs existentes como subtabs conservando sus layouts originales.
+
+```java
+ctx.subtab(EXAMPLE_ADDON_TAB, EXAMPLE_PARENT_TAB);
+
+ctx.subtabs(EXAMPLE_PARENT_TAB, FIRST_ADDON_TAB, SECOND_ADDON_TAB);
+```
+
+Usa `controlSubtab` cuando CTL también deba construir el layout de la tab hija. Usa `subtab` o `subtabs` cuando solo necesites la agrupación visual. Las subtabs son hijas directas de una sola parent; no se soportan grupos de subtabs anidados.
+
+## CtlContributionBuilder
+
+Lo devuelve `CtlPluginContext#contribute`.
+
+```java
+CtlContributionBuilder addonPage(ResourceLocation pageId, Consumer<CtlPageBuilder> builder);
+CtlContributionBuilder addonPage(ResourceLocation pageId, long priority, Consumer<CtlPageBuilder> builder);
+CtlContributionBuilder contributePage(ResourceLocation pageId, Consumer<CtlPageContributionBuilder> builder);
+CtlContributionBuilder contributeSection(ResourceLocation pageId, ResourceLocation sectionId, Consumer<CtlSectionBuilder> builder);
+```
+
+`CtlPageContributionBuilder` se usa al contribuir a una página existente y solo expone `addonSection` y `contributeSection`. Una overview page no puede recibir contribuciones de página.
 
 ## CtlVanillaTabs
 
@@ -882,6 +933,12 @@ public final class ExampleVisualProvider extends CtlVisualProvider {
 ```
 
 Más detalles: [VISUALS.md](./VISUALS.md)
+
+## API de extensiones
+
+`CtlApiExtensions` expone vistas inmutables y resueltas de los layouts de CTL, además de helpers cliente para renderizar headers y banners de CTL en interfaces externas. Está pensada para integraciones como recipe viewers o navegadores personalizados de tabs.
+
+Consulta [EXTENSIONS.md](./EXTENSIONS.md) para ver el contrato completo y ejemplos.
 
 ## Compatibilidad y estabilidad
 

@@ -2,134 +2,170 @@ package com.ziver.tab_layouts.client.screen;
 
 import com.ziver.tab_layouts.Config;
 import com.ziver.tab_layouts.internal.layout.CtlFallbackMode;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.StringWidget;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.options.OptionsSubScreen;
 import net.minecraft.network.chat.Component;
 import net.neoforged.fml.loading.FMLEnvironment;
-import org.jetbrains.annotations.NotNull;
 
-public final class CtlConfigScreen extends Screen {
+import java.util.Objects;
+
+public final class CtlConfigScreen extends OptionsSubScreen {
 
     private static final Component TITLE = Component.translatable("screen.tab_layouts.config.title");
 
-    private final Screen parent;
+    private static final int LABEL_WIDTH = 170;
+    private static final int CONTROL_WIDTH = 100;
 
-    private Button toggleBuiltinVanillaLayoutsButton;
-    private Button toggleFallbackPagesButton;
+    private Button builtinVanillaLayoutsButton;
+    private Button subtabsButton;
+    private Button creativeConfigButton;
+    private Button fallbackPagesButton;
     private CycleButton<CtlFallbackMode> fallbackModeButton;
-    private Button toggleDevVisualDebugButton;
+    private Button devVisualDebugButton;
 
     public CtlConfigScreen(Screen parent) {
-        super(TITLE);
-        this.parent = parent;
+        super(parent, Minecraft.getInstance().options, TITLE);
     }
 
     @Override
-    protected void init() {
-        super.init();
+    protected void addOptions() {
+        Objects.requireNonNull(this.list, "list");
 
-        int buttonWidth = 260;
-        int buttonHeight = 20;
-        int spacing = 24;
-        int centerX = this.width / 2 - buttonWidth / 2;
-        int startY = this.height / 2 - 48;
+        Component builtinVanillaLayoutsLabel = Component.translatable("screen.tab_layouts.config.builtin_vanilla_layouts");
+        Component builtinVanillaLayoutsTooltip = Component.translatable("screen.tab_layouts.config.builtin_vanilla_layouts.tooltip");
 
-        int row = 0;
+        Component subtabsLabel = Component.translatable("screen.tab_layouts.config.subtabs");
+        Component subtabsTooltip = Component.translatable("screen.tab_layouts.config.subtabs.tooltip");
 
-        this.toggleBuiltinVanillaLayoutsButton = this.addRenderableWidget(Button.builder(getToggleBuiltinVanillaLayoutsButtonText(),
-                button -> toggleBuiltinVanillaLayouts()).bounds(centerX, startY + spacing * row++, buttonWidth, buttonHeight).build());
+        Component creativeConfigButtonLabel = Component.translatable("screen.tab_layouts.config.creative_button");
+        Component creativeConfigButtonTooltip = Component.translatable("screen.tab_layouts.config.creative_button.tooltip");
 
-        this.toggleFallbackPagesButton = this.addRenderableWidget(Button.builder(getToggleFallbackPagesButtonText(),
-                button -> toggleFallbackPages()).bounds(centerX, startY + spacing * row++, buttonWidth, buttonHeight).build());
+        Component fallbackPagesLabel = Component.translatable("screen.tab_layouts.config.fallback_pages");
+        Component fallbackPagesTooltip = Component.translatable("screen.tab_layouts.config.fallback_pages.tooltip");
 
-        this.fallbackModeButton = this.addRenderableWidget(CycleButton
-                .builder(CtlFallbackMode::displayName)
+        Component fallbackModeLabel = Component.translatable("screen.tab_layouts.config.fallback_mode");
+        Component fallbackModeTooltip = Component.translatable("screen.tab_layouts.config.fallback_mode.tooltip");
+
+        this.builtinVanillaLayoutsButton = createToggleButton(Config.ENABLE_BUILTIN_VANILLA_LAYOUTS.get(), builtinVanillaLayoutsTooltip, button -> {
+            Config.ENABLE_BUILTIN_VANILLA_LAYOUTS.set(!Config.ENABLE_BUILTIN_VANILLA_LAYOUTS.get());
+            saveConfig();
+            updateButtonStates();
+        });
+
+        this.subtabsButton = createToggleButton(Config.ENABLE_SUBTABS.get(), subtabsTooltip, button -> {
+            Config.ENABLE_SUBTABS.set(!Config.ENABLE_SUBTABS.get());
+            saveConfig();
+            updateButtonStates();
+        });
+
+        this.creativeConfigButton = createToggleButton(Config.SHOW_CREATIVE_CONFIG_BUTTON.get(), creativeConfigButtonTooltip, button -> {
+            Config.SHOW_CREATIVE_CONFIG_BUTTON.set(!Config.SHOW_CREATIVE_CONFIG_BUTTON.get());
+            saveConfig();
+            updateButtonStates();
+        });
+
+        this.fallbackPagesButton = createToggleButton(Config.ENABLE_FALLBACK_PAGES.get(), fallbackPagesTooltip, button -> {
+            Config.ENABLE_FALLBACK_PAGES.set(!Config.ENABLE_FALLBACK_PAGES.get());
+            saveConfig();
+            updateButtonStates();
+        });
+
+        this.fallbackModeButton = CycleButton.builder(CtlFallbackMode::displayName)
                 .withValues(CtlFallbackMode.values())
                 .withInitialValue(Config.FALLBACK_MODE.get())
-                .create(centerX, startY + spacing * row++, buttonWidth, buttonHeight, Component.translatable("screen.tab_layouts.config.fallback_mode"),
-                        (button, value) -> {
-                            Config.FALLBACK_MODE.set(value);
-                            Config.SPEC.save();
-                        }
-                ));
+                .displayOnlyValue()
+                .create(0, 0, CONTROL_WIDTH, Button.DEFAULT_HEIGHT, Component.empty(), (button, value) -> {
+                    Config.FALLBACK_MODE.set(value);
+                    saveConfig();
+                    updateButtonStates();
+                });
 
-        this.fallbackModeButton.active = Config.ENABLE_FALLBACK_PAGES.get();
+        this.fallbackModeButton.setTooltip(Tooltip.create(fallbackModeTooltip));
+
+        this.list.addSmall(createLabel(builtinVanillaLayoutsLabel, builtinVanillaLayoutsTooltip), this.builtinVanillaLayoutsButton);
+        this.list.addSmall(createLabel(subtabsLabel, subtabsTooltip), this.subtabsButton);
+        this.list.addSmall(createLabel(creativeConfigButtonLabel, creativeConfigButtonTooltip), this.creativeConfigButton);
+        this.list.addSmall(createLabel(fallbackPagesLabel, fallbackPagesTooltip), this.fallbackPagesButton);
+        this.list.addSmall(createLabel(fallbackModeLabel, fallbackModeTooltip), this.fallbackModeButton);
 
         if (isDevActive()) {
-            this.toggleDevVisualDebugButton = this.addRenderableWidget(Button.builder(getToggleDevVisualDebugButtonText(),
-                    button -> toggleDevVisualDebug()).bounds(centerX, startY + spacing * row++, buttonWidth, buttonHeight).build());
+            Component devVisualDebugLabel = Component.translatable("screen.tab_layouts.config.dev_visual_debug");
+            Component devVisualDebugTooltip = Component.translatable("screen.tab_layouts.config.dev_visual_debug.tooltip");
+
+            this.devVisualDebugButton = createToggleButton(Config.ENABLE_DEVELOPER_VISUAL_DEBUG.get(), devVisualDebugTooltip, button -> {
+                Config.ENABLE_DEVELOPER_VISUAL_DEBUG.set(!Config.ENABLE_DEVELOPER_VISUAL_DEBUG.get());
+                saveConfig();
+                updateButtonStates();
+            });
+
+            this.list.addSmall(createLabel(devVisualDebugLabel, devVisualDebugTooltip), this.devVisualDebugButton);
         } else {
-            this.toggleDevVisualDebugButton = null;
+            this.devVisualDebugButton = null;
         }
 
-        this.addRenderableWidget(Button.builder(Component.translatable("gui.done"), button -> onClose()
-        ).bounds(centerX, startY + spacing * (row + 1), buttonWidth, buttonHeight).build());
+        updateButtonStates();
     }
 
-    private void toggleBuiltinVanillaLayouts() {
-        boolean next = !Config.ENABLE_BUILTIN_VANILLA_LAYOUTS.get();
-
-        Config.ENABLE_BUILTIN_VANILLA_LAYOUTS.set(next);
-        Config.SPEC.save();
-
-        this.toggleBuiltinVanillaLayoutsButton.setMessage(getToggleBuiltinVanillaLayoutsButtonText());
+    private StringWidget createLabel(Component label, Component tooltip) {
+        StringWidget widget = new StringWidget(LABEL_WIDTH, Button.DEFAULT_HEIGHT, label, this.font).alignLeft();
+        widget.setTooltip(Tooltip.create(tooltip));
+        return widget;
     }
 
-    private Component getToggleBuiltinVanillaLayoutsButtonText() {
-        return Component.translatable(Config.ENABLE_BUILTIN_VANILLA_LAYOUTS.get()
-                ? "screen.tab_layouts.config.builtin_vanilla_layouts.enabled" : "screen.tab_layouts.config.builtin_vanilla_layouts.disabled");
+    private Button createToggleButton(boolean value, Component tooltip, Button.OnPress onPress) {
+        Button button = Button.builder(getToggleText(value), onPress).width(CONTROL_WIDTH).build();
+        button.setTooltip(Tooltip.create(tooltip));
+        return button;
     }
 
-    private void toggleFallbackPages() {
-        boolean next = !Config.ENABLE_FALLBACK_PAGES.get();
+    private void updateButtonStates() {
+        if (this.builtinVanillaLayoutsButton != null) {
+            this.builtinVanillaLayoutsButton.setMessage(getToggleText(Config.ENABLE_BUILTIN_VANILLA_LAYOUTS.get()));
+        }
 
-        Config.ENABLE_FALLBACK_PAGES.set(next);
-        Config.SPEC.save();
+        if (this.subtabsButton != null) {
+            this.subtabsButton.setMessage(getToggleText(Config.ENABLE_SUBTABS.get()));
+        }
 
-        this.toggleFallbackPagesButton.setMessage(getToggleFallbackPagesButtonText());
+        if (this.creativeConfigButton != null) {
+            this.creativeConfigButton.setMessage(getToggleText(Config.SHOW_CREATIVE_CONFIG_BUTTON.get()));
+        }
+
+        if (this.fallbackPagesButton != null) {
+            this.fallbackPagesButton.setMessage(getToggleText(Config.ENABLE_FALLBACK_PAGES.get()));
+        }
 
         if (this.fallbackModeButton != null) {
-            this.fallbackModeButton.active = next;
+            CtlFallbackMode mode = Config.FALLBACK_MODE.get();
+
+            this.fallbackModeButton.active = Config.ENABLE_FALLBACK_PAGES.get();
+            this.fallbackModeButton.setValue(mode);
+            this.fallbackModeButton.setTooltip(Tooltip.create(getFallbackModeTooltip(mode)));
+        }
+
+        if (this.devVisualDebugButton != null) {
+            this.devVisualDebugButton.setMessage(getToggleText(Config.ENABLE_DEVELOPER_VISUAL_DEBUG.get()));
         }
     }
 
-    private Component getToggleFallbackPagesButtonText() {
-        return Component.translatable(Config.ENABLE_FALLBACK_PAGES.get()
-                ? "screen.tab_layouts.config.fallback_pages.enabled" : "screen.tab_layouts.config.fallback_pages.disabled");
+    private static Component getFallbackModeTooltip(CtlFallbackMode mode) {
+        return Component.translatable(switch (mode) {
+            case BY_MOD_SECTION -> "screen.tab_layouts.config.fallback_mode.by_mod_section.tooltip";
+            case BY_MOD_PAGE -> "screen.tab_layouts.config.fallback_mode.by_mod_page.tooltip";
+        });
     }
 
-    private void toggleDevVisualDebug() {
-        boolean next = !Config.ENABLE_DEVELOPER_VISUAL_DEBUG.get();
+    private static Component getToggleText(boolean value) {
+        return Component.translatable(value ? "options.on" : "options.off");
+    }
 
-        Config.ENABLE_DEVELOPER_VISUAL_DEBUG.set(next);
+    private static void saveConfig() {
         Config.SPEC.save();
-
-        if (this.toggleDevVisualDebugButton != null) this.toggleDevVisualDebugButton.setMessage(getToggleDevVisualDebugButtonText());
-    }
-
-    private Component getToggleDevVisualDebugButtonText() {
-        return Component.translatable(Config.ENABLE_DEVELOPER_VISUAL_DEBUG.get()
-                ? "screen.tab_layouts.config.dev_visual_debug.enabled" : "screen.tab_layouts.config.dev_visual_debug.disabled");
-    }
-
-    @Override
-    public void onClose() {
-        if (this.minecraft != null) {
-            this.minecraft.setScreen(this.parent);
-        }
-    }
-
-    @Override
-    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(graphics, mouseX, mouseY, partialTick);
-        super.render(graphics, mouseX, mouseY, partialTick);
-
-        graphics.drawCenteredString(this.font, this.title, this.width / 2, 20, 0xFFFFFF);
-
-        Component restartWarning = Component.translatable("screen.tab_layouts.config.restart_warning");
-        graphics.drawCenteredString(this.font, restartWarning, this.width / 2, this.height / 2 + 95, 0xAAAAAA);
     }
 
     private static boolean isDevActive() {

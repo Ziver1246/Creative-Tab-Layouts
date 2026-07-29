@@ -8,15 +8,18 @@ import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 public record CtlPage(ResourceLocation id, Component title, CtlPageType type, long priority, long insertionOrder, List<CtlEntry> entries, List<CtlSection> sections) {
 
     public CtlBuiltPage build(HolderLookup.Provider registries) {
-        if (type == CtlPageType.OVERVIEW) {
-            return buildOverviewPage();
-        }
+        return build(registries, sectionId -> false);
+    }
 
-        return buildSectionedPage(registries);
+    public CtlBuiltPage build(HolderLookup.Provider registries, Predicate<ResourceLocation> collapsedSections) {
+        if (type == CtlPageType.OVERVIEW) return buildOverviewPage();
+
+        return buildSectionedPage(registries, collapsedSections);
     }
 
     private CtlBuiltPage buildOverviewPage() {
@@ -29,7 +32,7 @@ public record CtlPage(ResourceLocation id, Component title, CtlPageType type, lo
         return new CtlBuiltPage(items, List.of(), true);
     }
 
-    private CtlBuiltPage buildSectionedPage(HolderLookup.Provider registries) {
+    private CtlBuiltPage buildSectionedPage(HolderLookup.Provider registries, Predicate<ResourceLocation> collapsedSections) {
         List<ItemStack> items = new ArrayList<>();
         List<CtlRenderedSection> renderedSections = new ArrayList<>();
 
@@ -46,6 +49,8 @@ public record CtlPage(ResourceLocation id, Component title, CtlPageType type, lo
             for (int i = 0; i < 9; i++) {
                 items.add(ItemStack.EMPTY);
             }
+
+            if (collapsedSections.test(section.id())) continue;
 
             List<CtlEntry> orderedEntries = CtlEntryPlacementResolver.resolve(section.entries(), registries);
             addEntries(items, orderedEntries, registries);

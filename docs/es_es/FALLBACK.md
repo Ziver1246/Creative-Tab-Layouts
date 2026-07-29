@@ -217,6 +217,10 @@ Fallback:
 - Siempre aparece al final.
 ```
 
+## Vistas externas del layout
+
+`CtlApiExtensions#getTabView(tabId, registries)` devuelve únicamente las páginas declaradas por CTL. La sobrecarga que recibe `originalItems` también puede añadir fallback pages y las expone como `PageType.FALLBACK` con secciones `SectionType.FALLBACK`.
+
 ## Recomendación para mods
 
 Si tu mod quiere integrarse bien:

@@ -3,16 +3,7 @@ package com.ziver.tab_layouts.internal.builtin.vanilla;
 import com.ziver.tab_layouts.api.CtlVanillaTabs;
 import com.ziver.tab_layouts.api.plugin.CtlPluginContext;
 import com.ziver.tab_layouts.api.plugin.ICtlPlugin;
-import com.ziver.tab_layouts.internal.builtin.vanilla.pages.MinecraftBuildingBlocksLayout;
-import com.ziver.tab_layouts.internal.builtin.vanilla.pages.MinecraftColoredBlocksLayout;
-import com.ziver.tab_layouts.internal.builtin.vanilla.pages.MinecraftCombatLayout;
-import com.ziver.tab_layouts.internal.builtin.vanilla.pages.MinecraftFoodAndDrinksLayout;
-import com.ziver.tab_layouts.internal.builtin.vanilla.pages.MinecraftFunctionalBlocksLayout;
-import com.ziver.tab_layouts.internal.builtin.vanilla.pages.MinecraftIngredientsLayout;
-import com.ziver.tab_layouts.internal.builtin.vanilla.pages.MinecraftNaturalBlocksLayout;
-import com.ziver.tab_layouts.internal.builtin.vanilla.pages.MinecraftRedstoneBlocksLayout;
-import com.ziver.tab_layouts.internal.builtin.vanilla.pages.MinecraftSpawnEggsLayout;
-import com.ziver.tab_layouts.internal.builtin.vanilla.pages.MinecraftToolsAndUtilitiesLayout;
+import com.ziver.tab_layouts.internal.builtin.vanilla.pages.*;
 import com.ziver.tab_layouts.internal.registry.CtlTabRegistry;
 import net.minecraft.resources.ResourceLocation;
 
@@ -20,7 +11,7 @@ public final class MinecraftCtlPlugin implements ICtlPlugin {
 
     @Override
     public ResourceLocation getPluginUid() {
-        return CtlVanillaTabs.BUILDING_BLOCKS.withPath("minecraft_builtin_layouts");
+        return ResourceLocation.withDefaultNamespace("minecraft_vanilla_builtin_layouts");
     }
 
     @Override

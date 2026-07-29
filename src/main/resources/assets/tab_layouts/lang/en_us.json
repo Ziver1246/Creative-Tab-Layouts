@@ -11,14 +11,31 @@
   "screen.tab_layouts.missing_json_config": "ERROR: Missing JSON source",
   "screen.tab_layouts.empty_json_config": "INFO: JSON source is empty",
   "screen.tab_layouts.invalid_json_config": "ERROR: Invalid JSON source",
-  "screen.tab_layouts.incomplete_json_config": "INFO: JSON source has no texture field",
+  "screen.tab_layouts.incomplete_json_config": "INFO: JSON source has no «texture» field",
 
-  "screen.tab_layouts.config.fallback_pages.enabled": "Fallback Pages: Enabled",
-  "screen.tab_layouts.config.fallback_pages.disabled": "Fallback Pages: Disabled",
+  "screen.tab_layouts.config.builtin_vanilla_layouts": "Built-in vanilla layouts",
+  "screen.tab_layouts.config.builtin_vanilla_layouts.tooltip": "Enables CTL's built-in layouts for selected vanilla creative tabs. External plugins can still control their own tabs independently.",
 
-  "screen.tab_layouts.config.fallback_mode": "Fallback Mode",
-  "screen.tab_layouts.config.fallback_mode.by_mod_section": "One Mods Page, Sections by Mod",
-  "screen.tab_layouts.config.fallback_mode.by_mod_page": "One Page per Mod",
+  "screen.tab_layouts.config.subtabs": "Subtabs",
+  "screen.tab_layouts.config.subtabs.tooltip": "Groups registered subtabs in the Creative Inventory. When disabled, they remain normal independent creative tabs.",
+
+  "screen.tab_layouts.config.creative_button": "Creative menu drawer",
+  "screen.tab_layouts.config.creative_button.tooltip": "Shows the organizer access in the creative inventory drawer.",
+
+  "screen.tab_layouts.config.fallback_pages": "Fallback pages",
+  "screen.tab_layouts.config.fallback_pages.tooltip": "Preserves unclaimed mod items by adding fallback content to CTL-controlled tabs.",
+
+  "screen.tab_layouts.config.fallback_mode": "Fallback organization",
+  "screen.tab_layouts.config.fallback_mode.tooltip": "Controls how unclaimed mod items are grouped in fallback content.",
+
+  "screen.tab_layouts.config.fallback_mode.by_mod_section": "Sections by mod",
+  "screen.tab_layouts.config.fallback_mode.by_mod_section.tooltip": "Creates one final page named \"Mods\" with a separate section for each mod.",
+
+  "screen.tab_layouts.config.fallback_mode.by_mod_page": "Page per mod",
+  "screen.tab_layouts.config.fallback_mode.by_mod_page.tooltip": "Creates a separate final fallback page for each mod.",
+
+  "screen.tab_layouts.config.dev_visual_debug": "Visual debug",
+  "screen.tab_layouts.config.dev_visual_debug.tooltip": "Shows developer metadata and debug information for CTL headers and banners.",
 
 
 

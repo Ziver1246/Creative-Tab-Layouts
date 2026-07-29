@@ -4,9 +4,11 @@ import com.ziver.tab_layouts.Config;
 import com.ziver.tab_layouts.client.render.CtlPageRenderState;
 import com.ziver.tab_layouts.client.render.CtlSimpleFrameRenderer;
 import com.ziver.tab_layouts.client.render.CtlVisualRenderer;
+import com.ziver.tab_layouts.client.render.animation.CtlAnimationStateRegistry;
 import com.ziver.tab_layouts.client.util.CtlUiLayouts;
 import com.ziver.tab_layouts.internal.layout.*;
 import com.ziver.tab_layouts.internal.registry.CtlTabRegistry;
+import com.ziver.tab_layouts.mixins.CreativeModeInventoryScreenAccessor;
 import com.ziver.tab_layouts.mixins.ItemPickerMenuAccessor;
 import com.ziver.tab_layouts.mixins.ScreenAccessor;
 import net.minecraft.client.Minecraft;
@@ -18,6 +20,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
@@ -90,6 +93,10 @@ public final class CtlPageScreenController {
     }
 
     public void applyCurrentPage(CreativeModeInventoryScreen screen, CreativeModeTab selectedTab) {
+        applyCurrentPage(screen, selectedTab, 0.0F);
+    }
+
+    private void applyCurrentPage(CreativeModeInventoryScreen screen, CreativeModeTab selectedTab, float scrollOffs) {
         ResourceLocation tabId = tabId(selectedTab);
         if (tabId == null) return;
 
@@ -101,9 +108,8 @@ public final class CtlPageScreenController {
 
         ItemPickerMenuAccessor menu = (ItemPickerMenuAccessor) screen.getMenu();
 
-        if (!vanillaItemsByTab.containsKey(tabId)) {
+        if (!vanillaItemsByTab.containsKey(tabId))
             vanillaItemsByTab.put(tabId, copyCurrentMenuItems(menu));
-        }
 
         int effectivePageCount = effectivePageCount(tabId, layout);
         int pageIndex = CtlPageState.page(tabId);
@@ -122,15 +128,21 @@ public final class CtlPageScreenController {
             CtlPage page = layout.page(pageIndex);
             if (page == null) return;
 
-            builtPage = page.build(minecraft.level.registryAccess());
+            builtPage = page.build(
+                    minecraft.level.registryAccess(),
+                    sectionId -> CtlSectionState.isCollapsed(tabId, page.id(), sectionId)
+            );
         }
 
-        CtlPageRenderState.currentRow = 0;
+        float restoredScroll = Mth.clamp(scrollOffs, 0.0F, 1.0F);
+
         CtlPageRenderState.set(tabId, pageIndex, builtPage.sections());
 
         menu.ctl$getItems().clear();
         menu.ctl$getItems().addAll(builtPage.items());
-        menu.ctl$scrollTo(0.0F);
+        menu.ctl$scrollTo(restoredScroll);
+
+        ((CreativeModeInventoryScreenAccessor) screen).ctl$setScrollOffs(restoredScroll);
     }
 
     public void renderOverlay(CreativeModeInventoryScreen screen, GuiGraphics graphics, CreativeModeTab selectedTab, int mouseX, int mouseY) {
@@ -163,7 +175,7 @@ public final class CtlPageScreenController {
         int height = CtlUiLayouts.BANNER_HEIGHT;
 
         boolean hovering = mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height;
-        boolean rendered = CtlVisualRenderer.renderBanner(graphics, tabId, pageIndex, page, x, y, width, height, hovering, mouseX, mouseY);
+        boolean rendered = CtlVisualRenderer.renderBanner(graphics, CtlAnimationStateRegistry.CREATIVE_CONTEXT, tabId, pageIndex, page, x, y, width, height, hovering, mouseX, mouseY, true);
 
         if (!rendered) CtlSimpleFrameRenderer.renderBannerFrame(graphics, screen.getGuiLeft(), screen.getGuiTop());
     }
@@ -259,8 +271,49 @@ public final class CtlPageScreenController {
     public boolean mouseClicked(CreativeModeInventoryScreen screen, CreativeModeTab selectedTab, double mouseX, double mouseY, int button) {
         if (button != 0) return false;
 
+        if (toggleSection(screen, selectedTab, mouseX, mouseY)) return true;
         if (previousButton != null && previousButton.visible && previousButton.active && previousButton.isMouseOver(mouseX, mouseY)) return previous(screen, selectedTab);
         if (nextButton != null && nextButton.visible && nextButton.active && nextButton.isMouseOver(mouseX, mouseY)) return next(screen, selectedTab);
+
+        return false;
+    }
+
+    private boolean toggleSection(CreativeModeInventoryScreen screen, CreativeModeTab selectedTab, double mouseX, double mouseY) {
+        ResourceLocation tabId = tabId(selectedTab);
+        if (tabId == null) return false;
+
+        CtlTabLayout layout = CtlTabRegistry.get(tabId);
+        if (layout == null || layout.pageCount() == 0) return false;
+
+        int pageIndex = CtlPageState.page(tabId);
+        if (isFallbackPage(tabId, layout, pageIndex)) return false;
+
+        CtlPage page = layout.page(pageIndex);
+        if (page == null || page.type() == CtlPageType.OVERVIEW) return false;
+        if (page.sections().size() <= 1) return false;
+
+        int baseX = screen.getGuiLeft() + CtlUiLayouts.HEADER_BASE_X_OFFSET;
+        int baseY = screen.getGuiTop() + CtlUiLayouts.HEADER_BASE_Y_OFFSET;
+
+        for (CtlRenderedSection rendered : CtlPageRenderState.get(tabId, pageIndex)) {
+            int visibleRow = rendered.row() - CtlPageRenderState.currentRow;
+            if (visibleRow < 0 || visibleRow >= CtlUiLayouts.GRID_VISIBLE_ROWS) continue;
+
+            int headerY = baseY + visibleRow * CtlUiLayouts.HEADER_ROW_HEIGHT;
+
+            boolean hovering = mouseX >= baseX && mouseX < baseX + CtlUiLayouts.HEADER_ROW_WIDTH && mouseY >= headerY && mouseY < headerY + CtlUiLayouts.HEADER_ROW_HEIGHT;
+
+            if (!hovering) continue;
+
+            float scrollOffs = ((CreativeModeInventoryScreenAccessor) screen).ctl$getScrollOffs();
+
+            CtlSectionState.toggle(tabId, page.id(), rendered.section().id());
+
+            playSoundClick();
+            applyCurrentPage(screen, selectedTab, scrollOffs);
+            updateButtons(screen, selectedTab);
+            return true;
+        }
 
         return false;
     }

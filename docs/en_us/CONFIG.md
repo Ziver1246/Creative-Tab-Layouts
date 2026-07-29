@@ -14,6 +14,8 @@ The current options are:
 
 ```text
 enableBuiltinVanillaLayouts
+enableSubtabs
+showCreativeConfigButton
 enableDeveloperVisualDebug
 enableFallbackPages
 fallbackMode
@@ -44,6 +46,30 @@ Changes:
 Apply at runtime.
 Reopen the creative inventory if you need to refresh the view.
 ```
+
+## enableSubtabs
+
+Default:
+
+```text
+true
+```
+
+Enables the subtab side panel and grouped navigation. When disabled, registered subtabs are shown again as normal independent creative tabs.
+
+## showCreativeConfigButton
+
+Default:
+
+```text
+true
+```
+
+Shows the CTL configuration button in the creative inventory. Hiding the button does not disable CTL or reset its options. The same client options remain available in the config file.
+
+## In-game configuration screen
+
+The creative inventory button opens CTL's client configuration screen. Changes are saved when an option is changed. Options that depend on another setting, such as `fallbackMode`, are disabled in the screen while their parent feature is disabled.
 
 ## enableDeveloperVisualDebug
 

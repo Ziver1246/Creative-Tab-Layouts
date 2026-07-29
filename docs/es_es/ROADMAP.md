@@ -12,8 +12,13 @@ La versión actual incluye:
 ```text
 - API de plugins CTL.
 - @CtlPlugin e ICtlPlugin.
-- controlTab y contributeTab.
+- controlTab, controlSubtab, subtab, subtabs y contribute.
 - Layouts con pages y sections.
+- Grupos de subtabs y navegación mediante panel lateral.
+- Sections colapsables.
+- API de extensiones con layouts resueltos para interfaces externas.
+- Helpers de render externo para headers y banners.
+- Pantalla de configuración cliente integrada.
 - Overview pages con banners.
 - Headers para sections.
 - Base pages y addon pages.
@@ -85,19 +90,6 @@ Mejoras útiles para el debug visual:
 - Mostrar frame actual en animaciones.
 - Mostrar tamaño esperado de textura.
 - Copiar ids/rutas desde la UI.
-```
-
-## Organización manual de pages
-
-Una línea de mejora para modpacks es exponer un workflow público para orden manual de pages.
-
-Objetivos:
-
-```text
-- Reordenar pages por tab.
-- Resetear orden por tab.
-- Guardar orden manual.
-- Facilitar ajustes de modpack creators.
 ```
 
 ## Fallback avanzado

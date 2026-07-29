@@ -109,6 +109,7 @@ Para generar código:
 
 ```text
 API.md
+EXTENSIONS.md
 EXAMPLES.md
 CONCEPTS.md
 ```

@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[4,)"
+loaderVersion="[1,)"
 license="LGPL-2.1-or-later"
 
 [[mods]]
@@ -11,9 +11,11 @@ authors="Ziver1246"
 updateJSONURL="https://raw.githubusercontent.com/Ziver1246/Ziver1246-Modding/main/Creative_Tab_Layouts/creative_tab_layouts-updates.json"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/creative-tab-layouts"
 description='''
-Adds page-based organization to Creative Tabs, allowing modders to group items into structured sections with visual headers, banner pages, custom layouts, JSON-driven visuals, and optional sprite animations.
+Adds page-based organization to Creative Tabs, allowing modders to group items into structured pages, subtabs, and collapsible sections with visual headers, banner pages, custom layouts, JSON-driven visuals, and optional sprite animations.
 
-Designed to improve navigation and presentation for large content-heavy mods while remaining simple to integrate through a lightweight API.
+Includes a lightweight public API for building and extending layouts, querying resolved layout data, and reusing CTL headers and banners in external interfaces.
+
+Designed to improve navigation and presentation for large, content-heavy mods while remaining simple to integrate.
 '''
 
 [[mixins]]

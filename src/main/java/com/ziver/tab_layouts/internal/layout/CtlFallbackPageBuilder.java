@@ -236,4 +236,77 @@ public final class CtlFallbackPageBuilder {
 
         return builder.toString();
     }
+
+    public static List<CtlFallbackPage> resolve(ResourceLocation tabId, CtlTabLayout layout, List<ItemStack> originalItems, HolderLookup.Provider registries) {
+        Objects.requireNonNull(tabId, "tabId");
+        Objects.requireNonNull(layout, "layout");
+        Objects.requireNonNull(originalItems, "originalItems");
+        Objects.requireNonNull(registries, "registries");
+
+        Map<String, List<ItemStack>> itemsByMod = fallbackItemsByMod(layout, originalItems, registries);
+        if (itemsByMod.isEmpty()) return List.of();
+
+        return switch (Config.FALLBACK_MODE.get()) {
+            case BY_MOD_SECTION -> resolveByModSection(tabId, itemsByMod);
+            case BY_MOD_PAGE -> resolveByModPage(tabId, itemsByMod);
+        };
+    }
+
+    private static List<CtlFallbackPage> resolveByModSection(ResourceLocation tabId, Map<String, List<ItemStack>> itemsByMod) {
+        List<CtlFallbackSection> sections = new ArrayList<>(itemsByMod.size());
+
+        for (Map.Entry<String, List<ItemStack>> entry : itemsByMod.entrySet()) {
+            String modId = entry.getKey();
+            List<ItemStack> items = entry.getValue();
+
+            if (items.isEmpty()) continue;
+
+            sections.add(new CtlFallbackSection(fallbackSectionId(tabId, modId), modDisplayName(modId), items));
+        }
+
+        if (sections.isEmpty()) return List.of();
+        ResourceLocation pageId = ResourceLocation.fromNamespaceAndPath(tabId.getNamespace(), "fallback/" + sanitizePath(tabId.getPath()));
+
+        return List.of(new CtlFallbackPage(pageId, Component.translatable("screen.tab_layouts.fallback.mods"), sections));
+    }
+
+    private static List<CtlFallbackPage> resolveByModPage(ResourceLocation tabId, Map<String, List<ItemStack>> itemsByMod) {
+        List<CtlFallbackPage> pages = new ArrayList<>(itemsByMod.size());
+
+        for (Map.Entry<String, List<ItemStack>> entry : itemsByMod.entrySet()) {
+            String modId = entry.getKey();
+            List<ItemStack> items = entry.getValue();
+
+            if (items.isEmpty()) continue;
+
+            Component title = modDisplayName(modId);
+            ResourceLocation sectionId = fallbackSectionId(tabId, modId);
+            ResourceLocation pageId = fallbackPageId(tabId, modId);
+
+            CtlFallbackSection section = new CtlFallbackSection(sectionId, title, items);
+            pages.add(new CtlFallbackPage(pageId, title, List.of(section)));
+        }
+
+        return List.copyOf(pages);
+    }
+
+    private static ResourceLocation fallbackPageId(ResourceLocation tabId, String modId) {
+        return ResourceLocation.fromNamespaceAndPath(modId, "fallback/" + sanitizePath(tabId.getNamespace()) + "/" + sanitizePath(tabId.getPath()));
+    }
+
+    public record CtlFallbackPage(ResourceLocation id, Component title, List<CtlFallbackSection> sections) {
+        public CtlFallbackPage {
+            Objects.requireNonNull(id, "id");
+            Objects.requireNonNull(title, "title");
+            sections = List.copyOf(sections);
+        }
+    }
+
+    public record CtlFallbackSection(ResourceLocation id, Component title, List<ItemStack> items) {
+        public CtlFallbackSection {
+            Objects.requireNonNull(id, "id");
+            Objects.requireNonNull(title, "title");
+            items = items.stream().map(ItemStack::copy).toList();
+        }
+    }
 }

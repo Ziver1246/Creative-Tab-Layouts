@@ -217,6 +217,10 @@ Fallback:
 - Always appears at the end.
 ```
 
+## External layout views
+
+`CtlApiExtensions#getTabView(tabId, registries)` returns declared CTL pages only. The overload receiving `originalItems` may also append fallback pages and exposes them as `PageType.FALLBACK` with `SectionType.FALLBACK` sections.
+
 ## Recommendation for mods
 
 If your mod wants to integrate well:

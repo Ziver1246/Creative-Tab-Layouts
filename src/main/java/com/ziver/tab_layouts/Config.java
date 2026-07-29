@@ -9,6 +9,8 @@ public final class Config {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
     public static final ModConfigSpec.BooleanValue ENABLE_BUILTIN_VANILLA_LAYOUTS;
     public static final ModConfigSpec.BooleanValue ENABLE_DEVELOPER_VISUAL_DEBUG;
+    public static final ModConfigSpec.BooleanValue ENABLE_SUBTABS;
+    public static final ModConfigSpec.BooleanValue SHOW_CREATIVE_CONFIG_BUTTON;
     public static final ModConfigSpec.BooleanValue ENABLE_FALLBACK_PAGES;
     public static final ModConfigSpec.EnumValue<CtlFallbackMode> FALLBACK_MODE;
     public static final ModConfigSpec SPEC;
@@ -21,14 +23,24 @@ public final class Config {
                 "Changes apply immediately. Reopen the Creative Inventory if needed."
         ).define("enableBuiltinVanillaLayouts", true);
 
+        ENABLE_SUBTABS = BUILDER.comment(
+                "Enables CTL subtab grouping in the Creative Inventory.",
+                "When disabled, registered subtabs remain normal independent creative tabs.",
+                "External integrations may only display grouped subtabs while this option is enabled."
+        ).define("enableSubtabs", true);
+
+        SHOW_CREATIVE_CONFIG_BUTTON = BUILDER.comment(
+                "Shows a CTL configuration button in the Creative Inventory."
+        ).define("showCreativeConfigButton", true);
+
         ENABLE_DEVELOPER_VISUAL_DEBUG = BUILDER.comment(
                 "Enables developer-only visual debug helpers for CTL headers and banners.",
                         "When enabled, CTL may show extra metadata/tooltips such as visual ids and JSON paths."
                 ).define("enableDeveloperVisualDebug", true);
 
         ENABLE_FALLBACK_PAGES = BUILDER.comment(
-                "Automatically adds a fallback page named 'Mods' to CTL-controlled tabs.",
-                "This page contains non-Minecraft items that were added to the original vanilla tab but were not claimed by CTL pages.",
+                "Automatically adds fallback pages to CTL-controlled tabs.",
+                "Fallback pages contain non-Minecraft items that were added to the original vanilla tab but were not claimed by CTL pages.",
                 "This helps preserve items from mods without CTL compatibility."
         ).define("enableFallbackPages", true);
 
