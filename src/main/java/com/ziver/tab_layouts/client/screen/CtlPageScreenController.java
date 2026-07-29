@@ -123,15 +123,15 @@ public final class CtlPageScreenController {
 
         if (isFallbackPage(tabId, layout, pageIndex)) {
             List<ItemStack> vanillaItems = vanillaItemsByTab.getOrDefault(tabId, List.of());
-            builtPage = CtlFallbackPageBuilder.build(tabId, layout, vanillaItems, minecraft.level.registryAccess(), fallbackPageIndex(layout, pageIndex));
+            int fallbackIndex = fallbackPageIndex(layout, pageIndex);
+
+            ResourceLocation fallbackPageId = CtlFallbackPageBuilder.pageId(tabId, layout, vanillaItems, minecraft.level.registryAccess(), fallbackIndex);
+            builtPage = CtlFallbackPageBuilder.build(tabId, layout, vanillaItems, minecraft.level.registryAccess(), fallbackIndex, sectionId -> CtlSectionState.isCollapsed(tabId, fallbackPageId, sectionId));
         } else {
             CtlPage page = layout.page(pageIndex);
             if (page == null) return;
 
-            builtPage = page.build(
-                    minecraft.level.registryAccess(),
-                    sectionId -> CtlSectionState.isCollapsed(tabId, page.id(), sectionId)
-            );
+            builtPage = page.build(minecraft.level.registryAccess(), sectionId -> CtlSectionState.isCollapsed(tabId, page.id(), sectionId));
         }
 
         float restoredScroll = Mth.clamp(scrollOffs, 0.0F, 1.0F);
@@ -155,7 +155,17 @@ public final class CtlPageScreenController {
         int pageIndex = CtlPageState.page(tabId);
 
         if (isFallbackPage(tabId, layout, pageIndex)) {
-            CtlSimpleFrameRenderer.renderHeaders(graphics, screen.getGuiLeft(), screen.getGuiTop(), selectedTab, mouseX, mouseY);
+            Minecraft minecraft = screen.getMinecraft();
+            if (minecraft.level == null) return;
+
+            List<ItemStack> vanillaItems = vanillaItemsByTab.getOrDefault(tabId, List.of());
+            int fallbackIndex = fallbackPageIndex(layout, pageIndex);
+
+            ResourceLocation fallbackPageId = CtlFallbackPageBuilder.pageId(tabId, layout, vanillaItems, minecraft.level.registryAccess(), fallbackIndex);
+
+            boolean collapsible = CtlPageRenderState.get(tabId, pageIndex).size() > 1;
+            CtlSimpleFrameRenderer.renderHeaders(graphics, screen.getGuiLeft(), screen.getGuiTop(), selectedTab, fallbackPageId, collapsible, mouseX, mouseY);
+
             return;
         }
 
@@ -164,7 +174,7 @@ public final class CtlPageScreenController {
 
         switch (page.type()) {
             case OVERVIEW -> renderOverview(screen, graphics, tabId, pageIndex, page, mouseX, mouseY);
-            case BASE, ADDON -> CtlSimpleFrameRenderer.renderHeaders(graphics, screen.getGuiLeft(), screen.getGuiTop(), selectedTab, mouseX, mouseY);
+            case BASE, ADDON -> CtlSimpleFrameRenderer.renderHeaders(graphics, screen.getGuiLeft(), screen.getGuiTop(), selectedTab, page.id(), page.sections().size() > 1, mouseX, mouseY);
         }
     }
 
@@ -285,12 +295,30 @@ public final class CtlPageScreenController {
         CtlTabLayout layout = CtlTabRegistry.get(tabId);
         if (layout == null || layout.pageCount() == 0) return false;
 
-        int pageIndex = CtlPageState.page(tabId);
-        if (isFallbackPage(tabId, layout, pageIndex)) return false;
+        Minecraft minecraft = screen.getMinecraft();
+        if (minecraft.level == null) return false;
 
-        CtlPage page = layout.page(pageIndex);
-        if (page == null || page.type() == CtlPageType.OVERVIEW) return false;
-        if (page.sections().size() <= 1) return false;
+        int pageIndex = CtlPageState.page(tabId);
+        ResourceLocation pageId;
+        boolean collapsible;
+
+        if (isFallbackPage(tabId, layout, pageIndex)) {
+            List<ItemStack> vanillaItems = vanillaItemsByTab.getOrDefault(tabId, List.of());
+            int fallbackIndex = fallbackPageIndex(layout, pageIndex);
+
+            pageId = CtlFallbackPageBuilder.pageId(tabId, layout, vanillaItems, minecraft.level.registryAccess(), fallbackIndex);
+
+            collapsible = CtlPageRenderState.get(tabId, pageIndex).size() > 1;
+        } else {
+            CtlPage page = layout.page(pageIndex);
+
+            if (page == null || page.type() == CtlPageType.OVERVIEW) return false;
+
+            pageId = page.id();
+            collapsible = page.sections().size() > 1;
+        }
+
+        if (!collapsible) return false;
 
         int baseX = screen.getGuiLeft() + CtlUiLayouts.HEADER_BASE_X_OFFSET;
         int baseY = screen.getGuiTop() + CtlUiLayouts.HEADER_BASE_Y_OFFSET;
@@ -307,7 +335,7 @@ public final class CtlPageScreenController {
 
             float scrollOffs = ((CreativeModeInventoryScreenAccessor) screen).ctl$getScrollOffs();
 
-            CtlSectionState.toggle(tabId, page.id(), rendered.section().id());
+            CtlSectionState.toggle(tabId, pageId, rendered.section().id());
 
             playSoundClick();
             applyCurrentPage(screen, selectedTab, scrollOffs);

@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModList;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public final class CtlFallbackPageBuilder {
     private static final int SECTION_HEADER_SIZE = 9;
@@ -48,17 +49,27 @@ public final class CtlFallbackPageBuilder {
     }
 
     public static CtlBuiltPage build(ResourceLocation tabId, CtlTabLayout layout, List<ItemStack> vanillaItems, HolderLookup.Provider registries, int fallbackIndex) {
+        return build(tabId, layout, vanillaItems, registries, fallbackIndex, sectionId -> false);
+    }
+
+    public static CtlBuiltPage build(ResourceLocation tabId, CtlTabLayout layout, List<ItemStack> vanillaItems, HolderLookup.Provider registries, int fallbackIndex, Predicate<ResourceLocation> collapsedSections) {
+        Objects.requireNonNull(tabId, "tabId");
+        Objects.requireNonNull(layout, "layout");
+        Objects.requireNonNull(vanillaItems, "vanillaItems");
+        Objects.requireNonNull(registries, "registries");
+        Objects.requireNonNull(collapsedSections, "collapsedSections");
+
         Map<String, List<ItemStack>> itemsByMod = fallbackItemsByMod(layout, vanillaItems, registries);
 
         if (itemsByMod.isEmpty()) return emptyPage();
 
         return switch (Config.FALLBACK_MODE.get()) {
-            case BY_MOD_SECTION -> buildByModSection(tabId, itemsByMod);
-            case BY_MOD_PAGE -> buildByModPage(tabId, itemsByMod, fallbackIndex);
+            case BY_MOD_SECTION -> buildByModSection(tabId, itemsByMod, collapsedSections);
+            case BY_MOD_PAGE -> buildByModPage(tabId, itemsByMod, fallbackIndex, collapsedSections);
         };
     }
 
-    private static CtlBuiltPage buildByModSection(ResourceLocation tabId, Map<String, List<ItemStack>> itemsByMod) {
+    private static CtlBuiltPage buildByModSection(ResourceLocation tabId, Map<String, List<ItemStack>> itemsByMod, Predicate<ResourceLocation> collapsedSections) {
         List<ItemStack> items = new ArrayList<>();
         List<CtlRenderedSection> renderedSections = new ArrayList<>();
 
@@ -70,11 +81,15 @@ public final class CtlFallbackPageBuilder {
 
             padToFullRow(items);
 
-            CtlSection section = new CtlSection(fallbackSectionId(tabId, modId), modDisplayName(modId), CtlSectionType.BASE, 0L, renderedSections.size(), List.of());
+            ResourceLocation sectionId = fallbackSectionId(tabId, modId);
+            CtlSection section = new CtlSection(sectionId, modDisplayName(modId), CtlSectionType.BASE, 0L, renderedSections.size(), List.of());
 
             renderedSections.add(new CtlRenderedSection(section, items.size() / 9));
 
             addHeaderRow(items);
+
+            if (collapsedSections.test(sectionId)) continue;
+
             addCopies(items, modItems);
         }
 
@@ -84,19 +99,24 @@ public final class CtlFallbackPageBuilder {
         return new CtlBuiltPage(items, renderedSections, false);
     }
 
-    private static CtlBuiltPage buildByModPage(ResourceLocation tabId, Map<String, List<ItemStack>> itemsByMod, int fallbackIndex) {
+    private static CtlBuiltPage buildByModPage(ResourceLocation tabId, Map<String, List<ItemStack>> itemsByMod, int fallbackIndex, Predicate<ResourceLocation> collapsedSections) {
         String modId = modIdAt(itemsByMod, fallbackIndex);
         List<ItemStack> modItems = itemsByMod.getOrDefault(modId, List.of());
 
         List<ItemStack> items = new ArrayList<>();
         List<CtlRenderedSection> renderedSections = new ArrayList<>();
 
-        CtlSection section = new CtlSection(fallbackSectionId(tabId, modId), modDisplayName(modId), CtlSectionType.BASE, 0L, 0L, List.of());
+        ResourceLocation sectionId = fallbackSectionId(tabId, modId);
+        CtlSection section = new CtlSection(sectionId, modDisplayName(modId), CtlSectionType.BASE, 0L, 0L, List.of());
 
         renderedSections.add(new CtlRenderedSection(section, 0));
 
         addHeaderRow(items);
-        addCopies(items, modItems);
+
+        if (!collapsedSections.test(sectionId)) {
+            addCopies(items, modItems);
+        }
+
         padToFullRow(items);
         padToMinimumPageSize(items);
 
@@ -265,7 +285,7 @@ public final class CtlFallbackPageBuilder {
         }
 
         if (sections.isEmpty()) return List.of();
-        ResourceLocation pageId = ResourceLocation.fromNamespaceAndPath(tabId.getNamespace(), "fallback/" + sanitizePath(tabId.getPath()));
+        ResourceLocation pageId = fallbackSectionPageId(tabId);
 
         return List.of(new CtlFallbackPage(pageId, Component.translatable("screen.tab_layouts.fallback.mods"), sections));
     }
@@ -292,6 +312,26 @@ public final class CtlFallbackPageBuilder {
 
     private static ResourceLocation fallbackPageId(ResourceLocation tabId, String modId) {
         return ResourceLocation.fromNamespaceAndPath(modId, "fallback/" + sanitizePath(tabId.getNamespace()) + "/" + sanitizePath(tabId.getPath()));
+    }
+
+    public static ResourceLocation pageId(ResourceLocation tabId, CtlTabLayout layout, List<ItemStack> vanillaItems, HolderLookup.Provider registries, int fallbackIndex) {
+        Objects.requireNonNull(tabId, "tabId");
+        Objects.requireNonNull(layout, "layout");
+        Objects.requireNonNull(vanillaItems, "vanillaItems");
+        Objects.requireNonNull(registries, "registries");
+
+        if (Config.FALLBACK_MODE.get() == CtlFallbackMode.BY_MOD_SECTION) {
+            return fallbackSectionPageId(tabId);
+        }
+
+        Map<String, List<ItemStack>> itemsByMod = fallbackItemsByMod(layout, vanillaItems, registries);
+        String modId = modIdAt(itemsByMod, fallbackIndex);
+
+        return fallbackPageId(tabId, modId);
+    }
+
+    private static ResourceLocation fallbackSectionPageId(ResourceLocation tabId) {
+        return ResourceLocation.fromNamespaceAndPath(tabId.getNamespace(), "fallback/" + sanitizePath(tabId.getPath()));
     }
 
     public record CtlFallbackPage(ResourceLocation id, Component title, List<CtlFallbackSection> sections) {

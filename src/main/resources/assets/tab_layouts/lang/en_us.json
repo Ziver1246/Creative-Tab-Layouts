@@ -1,10 +1,5 @@
 {
   "screen.tab_layouts.config.title": "Creative Tab Layouts Config",
-  "screen.tab_layouts.config.builtin_vanilla_layouts.enabled": "Built-in Vanilla Layouts: Enabled",
-  "screen.tab_layouts.config.builtin_vanilla_layouts.disabled": "Built-in Vanilla Layouts: Disabled",
-  "screen.tab_layouts.config.dev_visual_debug.enabled": "Developer Visual Debug: Enabled",
-  "screen.tab_layouts.config.dev_visual_debug.disabled": "Developer Visual Debug: Disabled",
-  "screen.tab_layouts.config.restart_warning": "Changes apply immediately.",
   "screen.tab_layouts.tab_pages": "Page",
   "screen.tab_layouts.fallback.mods": "Mods",
 

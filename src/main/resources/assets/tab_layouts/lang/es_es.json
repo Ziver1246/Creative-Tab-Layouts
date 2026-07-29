@@ -1,10 +1,5 @@
 {
   "screen.tab_layouts.config.title": "Configuración de Creative Tab Layouts",
-  "screen.tab_layouts.config.builtin_vanilla_layouts.enabled": "Layouts vanilla integrados: Activados",
-  "screen.tab_layouts.config.builtin_vanilla_layouts.disabled": "Layouts vanilla integrados: Desactivados",
-  "screen.tab_layouts.config.dev_visual_debug.enabled": "Debug visual para desarrolladores: Activado",
-  "screen.tab_layouts.config.dev_visual_debug.disabled": "Debug visual para desarrolladores: Desactivado",
-  "screen.tab_layouts.config.restart_warning": "Los cambios se aplican al instante.",
   "screen.tab_layouts.tab_pages": "Página",
   "screen.tab_layouts.fallback.mods": "Mods",
 

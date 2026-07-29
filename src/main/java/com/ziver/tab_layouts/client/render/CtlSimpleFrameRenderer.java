@@ -2,8 +2,9 @@ package com.ziver.tab_layouts.client.render;
 
 import com.ziver.tab_layouts.client.render.animation.CtlAnimationStateRegistry;
 import com.ziver.tab_layouts.client.util.CtlUiLayouts;
-import com.ziver.tab_layouts.internal.layout.*;
-import com.ziver.tab_layouts.internal.registry.CtlTabRegistry;
+import com.ziver.tab_layouts.internal.layout.CtlPageState;
+import com.ziver.tab_layouts.internal.layout.CtlRenderedSection;
+import com.ziver.tab_layouts.internal.layout.CtlSectionState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -15,22 +16,17 @@ import java.util.List;
 public final class CtlSimpleFrameRenderer {
     private CtlSimpleFrameRenderer() {}
 
-    public static void renderHeaders(GuiGraphics graphics, int left, int top, CreativeModeTab tab, int mouseX, int mouseY) {
+    public static void renderHeaders(GuiGraphics graphics, int left, int top, CreativeModeTab tab, ResourceLocation pageId, boolean collapsible, int mouseX, int mouseY) {
         ResourceLocation tabId = BuiltInRegistries.CREATIVE_MODE_TAB.getKey(tab);
         if (tabId == null) return;
 
-        CtlTabLayout layout = CtlTabRegistry.get(tabId);
-        if (layout == null) return;
-
         int pageIndex = CtlPageState.page(tabId);
-        CtlPage page = layout.page(pageIndex);
         List<CtlRenderedSection> sections = CtlPageRenderState.get(tabId, pageIndex);
 
         if (sections.isEmpty()) return;
 
         int baseX = left + CtlUiLayouts.HEADER_BASE_X_OFFSET;
         int baseY = top + CtlUiLayouts.HEADER_BASE_Y_OFFSET;
-        boolean collapsible = page != null && page.sections().size() > 1;
 
         for (CtlRenderedSection rendered : sections) {
             int visibleRow = rendered.row() - CtlPageRenderState.currentRow;
@@ -41,12 +37,14 @@ public final class CtlSimpleFrameRenderer {
             boolean hovering = mouseX >= baseX && mouseX < baseX + CtlUiLayouts.HEADER_ROW_WIDTH && mouseY >= y && mouseY < y + CtlUiLayouts.HEADER_ROW_HEIGHT;
 
             boolean visualRendered = CtlVisualRenderer.renderHeader(graphics, Minecraft.getInstance().font, CtlAnimationStateRegistry.CREATIVE_CONTEXT, tabId, pageIndex, rendered.section(), baseX, y, CtlUiLayouts.HEADER_ROW_WIDTH, CtlUiLayouts.HEADER_ROW_HEIGHT, hovering, mouseX, mouseY, true);
-            if (visualRendered) continue;
 
-            renderFallbackHeader(graphics, baseX, y, rendered);
+            if (!visualRendered) {
+                renderFallbackHeader(graphics, baseX, y, rendered);
 
-            if (hovering && collapsible)
-                renderCollapseIndicator(graphics, baseX, y, CtlUiLayouts.HEADER_ROW_WIDTH, CtlUiLayouts.HEADER_ROW_HEIGHT, CtlSectionState.isCollapsed(tabId, page.id(), rendered.section().id()));
+                if (hovering && collapsible) {
+                    renderCollapseIndicator(graphics, baseX, y, CtlUiLayouts.HEADER_ROW_WIDTH, CtlUiLayouts.HEADER_ROW_HEIGHT, CtlSectionState.isCollapsed(tabId, pageId, rendered.section().id()));
+                }
+            }
         }
     }
 
