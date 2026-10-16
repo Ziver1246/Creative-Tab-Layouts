@@ -1,110 +1,127 @@
 # Creative Tab Layouts
 
-Creative Tab Layouts, o CTL, es un mod/utilidad para Minecraft que permite organizar las pestañas del inventario creativo mediante layouts estructurados.
+Creative Tab Layouts, o CTL, es una utilidad de modding para Minecraft que permite organizar las pestañas del inventario creativo mediante layouts estructurados.
 
-CTL **no reemplaza el sistema de registro de creative tabs de Minecraft**. Las pestañas originales siguen existiendo. Lo que hace CTL es controlar cómo se muestran los items dentro de pestañas seleccionadas, reconstruyendo su contenido visible mediante páginas, secciones, headers, banners y páginas fallback.
+CTL **no reemplaza el sistema de registro de creative tabs de Minecraft**. Las pestañas siguen registrándose normalmente; CTL únicamente controla cómo se presenta el contenido de las pestañas seleccionadas.
 
-Está pensado para mods, addons y modpacks que necesitan una organización más clara del inventario creativo, especialmente cuando muchos items terminan dentro de una misma pestaña.
+Los layouts pueden usar páginas, secciones, subtabs, headers visuales, banners, entradas ordenadas y contenido fallback para mantener inventarios creativos grandes más fáciles de navegar.
 
 ## Qué problema resuelve
 
-Las creative tabs de Minecraft funcionan como listas simples de items. Eso es suficiente para mods pequeños, pero en mods grandes, addons o modpacks, esas listas pueden volverse difíciles de navegar.
+Las creative tabs de Minecraft son listas simples de items. Esto funciona bien para mods pequeños, pero en mods grandes, addons o modpacks pueden volverse difíciles de navegar.
 
-Creative Tab Layouts permite organizar el contenido de una pestaña en:
+CTL permite organizar esas pestañas mediante:
 
-* Páginas
-* Subtabs para agrupar creative tabs relacionadas
-* Secciones
-* Headers visuales
-* Banners de página
-* Grupos ordenados de items
-* Addon pages para compatibilidad
-* Fallback pages para items externos
+- Páginas
+- Subtabs
+- Secciones
+- Grupos ordenados de items
+- Headers de sección colapsables
+- Headers visuales
+- Banners de página
+- Contenido de addons
+- Contenido fallback para items no asignados
 
-Esto permite que las pestañas sean más fáciles de leer y navegar sin obligar a mover todos los items a pestañas personalizadas.
+Esto permite seguir usando creative tabs normales de Minecraft mientras su contenido se presenta de forma más estructurada.
 
 ## Idea principal
 
-CTL controla el **layout visible** de una creative tab seleccionada.
+CTL controla el **layout visible** de una creative tab.
 
-La creative tab original de Minecraft sigue existiendo, pero CTL reemplaza la lista visible de items por páginas construidas por CTL.
+La creative tab original sigue existiendo y permanece registrada normalmente. CTL reconstruye su contenido visible a partir de una definición de layout.
 
 Esto significa que:
 
-* Los mods pueden seguir usando creative tabs normales de Minecraft.
-* Los plugins de CTL pueden organizar esas tabs en páginas y secciones.
-* Los addons pueden contribuir páginas, secciones o entradas adicionales.
-* Las fallback pages pueden preservar items añadidos por mods que no usan CTL directamente.
+- Los mods pueden seguir usando creative tabs estándar de Minecraft.
+- Los plugins de CTL pueden organizar pestañas en páginas y secciones.
+- Otras integraciones pueden contribuir páginas, secciones o entradas.
+- Los subtabs pueden agrupar creative tabs relacionadas sin reemplazarlas.
+- El contenido fallback puede preservar items que no fueron asignados explícitamente a un layout de CTL.
 
 ## Características principales
 
-* Organización de creative tabs por páginas
-* Grupos de subtabs con panel lateral y scroll
-* Agrupación de items por secciones
-* Headers de sección colapsables
-* Headers visuales para secciones
-* Banners visuales para páginas
-* Visuales definidos mediante JSON
-* Soporte para animaciones por sprites
-* Addon pages para integraciones de compatibilidad
-* Fallback pages para items añadidos por otros mods
-* Ordenamiento por prioridad
-* API pública para mods y addons
-* Snapshots de layouts resueltos y visuales reutilizables para interfaces externas
-* Pantalla de configuración cliente integrada
-* Soporte de datagen para visuales de CTL
-* Layouts vanilla integrados
-* Herramientas de debug visual para desarrollo
+- Organización de creative tabs por páginas
+- Grupos de subtabs con panel lateral y scroll
+- Agrupación de items por secciones
+- Headers de sección colapsables
+- Headers visuales para secciones
+- Banners visuales para páginas
+- Visuales definidos mediante JSON
+- Animaciones opcionales por sprites
+- Addon pages e integraciones de compatibilidad
+- Fallback pages para items no asignados
+- Ordenamiento por prioridad
+- Sistema semántico de plugins con integraciones `NATIVE`, `PRESET` y `COMPAT`
+- Presets integrados para mods compatibles
+- API pública para mods y addons
+- Snapshots de layouts resueltos para interfaces externas
+- Visuales de CTL reutilizables
+- Soporte de datagen para visuales de CTL
+- Configuración integrada dentro del juego
+- Layouts vanilla integrados
+- Herramientas de debug visual para desarrollo
 
 ## Estado del proyecto
 
-Creative Tab Layouts cuenta con una API pública documentada para crear layouts, registrar páginas, agregar secciones, contribuir contenido y definir visuales personalizados.
+Creative Tab Layouts ofrece una API pública documentada para crear layouts, registrar integraciones, contribuir contenido, consultar layouts resueltos y utilizar visuales de CTL desde interfaces externas.
 
-La documentación se enfoca en explicar cómo usar CTL desde fuera: cómo crear layouts, cómo registrar páginas, cómo agregar secciones, cómo contribuir contenido de forma segura y cómo generar visuales mediante JSON o datagen.
+La API pública está organizada bajo:
 
-Los detalles internos de implementación no forman parte del contrato público del mod. Esto incluye mixins, controllers, caches, render internals, clases internas y layouts vanilla integrados.
+```text
+com.ziver.tab_layouts.api.*
+```
+
+Los detalles de implementación están organizados bajo:
+
+```text
+com.ziver.tab_layouts.internal.*
+```
+
+Cualquier clase dentro de `internal.*` **no forma parte del contrato público de la API** y puede cambiar sin previo aviso entre versiones.
 
 ## Instalación
 
-Instala Creative Tab Layouts como cualquier otro mod de Minecraft.
+Instala Creative Tab Layouts como cualquier otro mod de NeoForge.
 
-Para jugadores y modpacks, CTL puede instalarse como dependencia cuando un mod o modpack lo requiera.
+Para jugadores y modpacks, CTL puede instalarse directamente o utilizarse como dependencia de otros mods.
 
-Para desarrolladores, agrega CTL como dependencia y usa la API pública documentada.
+Para desarrolladores, agrega CTL como dependencia y utiliza únicamente la API pública documentada bajo `com.ziver.tab_layouts.api.*`.
 
 ## Documentación
 
-La documentación completa está en la carpeta `docs/`:
+La documentación completa está disponible en la carpeta `docs/`:
 
-* [Contenido de la documentación](docs/es_es/DOCS_CONTENT.md)
-* [Conceptos](docs/es_es/CONCEPTS.md)
-* [API](docs/es_es/API.md)
-* [Extensiones](docs/es_es/EXTENSIONS.md)
-* [Visuales](docs/es_es/VISUALS.md)
-* [Fallback Pages](docs/es_es/FALLBACK.md)
-* [Configuración](docs/es_es/CONFIG.md)
-* [Ejemplos](docs/es_es/EXAMPLES.md)
-* [Preset para IA](docs/es_es/AI_PRESET.md)
-* [Roadmap](docs/es_es/ROADMAP.md)
+- [Contenido de la documentación](docs/es_es/DOCS_CONTENT.md)
+- [Conceptos](docs/es_es/CONCEPTS.md)
+- [API](docs/es_es/API.md)
+- [Extensiones](docs/es_es/EXTENSIONS.md)
+- [Visuales](docs/es_es/VISUALS.md)
+- [Fallback Pages](docs/es_es/FALLBACK.md)
+- [Configuración](docs/es_es/CONFIG.md)
+- [Ejemplos](docs/es_es/EXAMPLES.md)
+- [Preset para IA](docs/es_es/AI_PRESET.md)
+- [Roadmap](docs/es_es/ROADMAP.md)
 
 También existe documentación en inglés:
 
-* [English documentation](docs/en_us/DOCS_CONTENT.md)
+- [English documentation](docs/en_us/DOCS_CONTENT.md)
 
 ## Alcance de la API pública
 
-Los paquetes `api` forman parte del contrato público de CTL y pueden ser usados por otros mods y addons.
-
-En cambio, lo siguiente no forma parte de la API pública:
+Solo los paquetes bajo:
 
 ```text
-internal.*
-client.*
-mixins.*
-clases builtin de layouts vanilla
-render internals
-screen controllers
-implementación interna del fallback
+com.ziver.tab_layouts.api.*
 ```
 
-Estas partes pueden cambiar sin considerarse una ruptura de API pública.
+se consideran parte del contrato público de CTL.
+
+Los paquetes bajo:
+
+```text
+com.ziver.tab_layouts.internal.*
+```
+
+son detalles de implementación y no deben ser utilizados por mods o addons externos.
+
+Las clases internas pueden cambiar, moverse o eliminarse sin considerarse una ruptura de la API pública.
