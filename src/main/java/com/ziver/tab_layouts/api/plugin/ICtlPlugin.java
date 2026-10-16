@@ -2,6 +2,12 @@ package com.ziver.tab_layouts.api.plugin;
 
 import net.minecraft.resources.ResourceLocation;
 
+/**
+ * Entry point implemented by CTL integrations.
+ *
+ * <p>Plugins are discovered through {@link CtlPlugin} and receive a
+ * {@link CtlPluginContext} during registration.</p>
+ */
 public interface ICtlPlugin {
 
     /**
@@ -13,5 +19,10 @@ public interface ICtlPlugin {
         throw new UnsupportedOperationException("Plugin UID is declared through @CtlPlugin");
     }
 
+    /**
+     * Registers this plugin's layouts, contributions, and subtab relationships.
+     *
+     * @param ctx registration context supplied by CTL
+     */
     void register(CtlPluginContext ctx);
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/** Immutable view of a parent creative tab and its registered subtabs. */
 public record CtlSubtabGroupView(ResourceLocation parentId, List<ResourceLocation> subtabs) {
 
     public CtlSubtabGroupView {

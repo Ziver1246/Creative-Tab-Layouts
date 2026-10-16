@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/** Owns rendering and pointer interaction for the scrollable subtab side panel. */
 public final class CtlSubtabPanel {
     private static final int PANEL_GAP = 4;
     private static final int PANEL_PADDING = 3;

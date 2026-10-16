@@ -2,6 +2,7 @@ package com.ziver.tab_layouts.internal.ctoapi;
 
 import com.ziver.tab_layouts.CtlConfig;
 
+/** Internal first-party bridge for CTO; intentionally excluded from CTL's public API. */
 public final class CtlCtoBridge {
     private CtlCtoBridge() {}
 

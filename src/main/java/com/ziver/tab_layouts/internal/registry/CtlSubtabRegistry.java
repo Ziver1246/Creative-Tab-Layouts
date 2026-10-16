@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.*;
 
+/** Registry of parent-to-subtab relationships declared by CTL plugins. */
 public final class CtlSubtabRegistry {
     private static final Map<ResourceLocation, ResourceLocation> PARENT_BY_SUBTAB = new LinkedHashMap<>();
     private static final Map<ResourceLocation, List<ResourceLocation>> SUBTABS_BY_PARENT = new LinkedHashMap<>();

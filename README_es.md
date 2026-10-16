@@ -89,22 +89,19 @@ Para desarrolladores, agrega CTL como dependencia y utiliza únicamente la API p
 
 ## Documentación
 
-La documentación completa está disponible en la carpeta `docs/`:
+La documentación para desarrolladores está disponible en [`docs/es_es/`](docs/es_es/):
 
-- [Contenido de la documentación](docs/es_es/DOCS_CONTENT.md)
-- [Conceptos](docs/es_es/CONCEPTS.md)
-- [API](docs/es_es/API.md)
-- [Extensiones](docs/es_es/EXTENSIONS.md)
+- [Primeros pasos](docs/es_es/GETTING_STARTED.md)
+- [Sistema de plugins](docs/es_es/PLUGINS.md)
+- [Layouts](docs/es_es/LAYOUTS.md)
 - [Visuales](docs/es_es/VISUALS.md)
-- [Fallback Pages](docs/es_es/FALLBACK.md)
+- [Fallback](docs/es_es/FALLBACK.md)
 - [Configuración](docs/es_es/CONFIG.md)
-- [Ejemplos](docs/es_es/EXAMPLES.md)
-- [Preset para IA](docs/es_es/AI_PRESET.md)
-- [Roadmap](docs/es_es/ROADMAP.md)
+- [Migración y planificación para 2.0](docs/es_es/MIGRATION.md)
 
 También existe documentación en inglés:
 
-- [English documentation](docs/en_us/DOCS_CONTENT.md)
+- [English documentation](docs/en_us/GETTING_STARTED.md)
 
 ## Alcance de la API pública
 

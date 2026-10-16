@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/** Orders overview pages first, then base pages, then addon pages; priority precedes registration order. */
 public final class CtlPageOrderResolver {
     private CtlPageOrderResolver() {}
 

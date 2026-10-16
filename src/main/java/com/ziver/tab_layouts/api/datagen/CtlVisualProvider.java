@@ -12,6 +12,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Base NeoForge data provider for generating CTL header and banner JSON resources.
+ * Generated resources are written under the CTL visual asset directories.
+ */
 public abstract class CtlVisualProvider implements DataProvider {
 
     private final PackOutput output;
@@ -25,20 +29,25 @@ public abstract class CtlVisualProvider implements DataProvider {
         this.modId = modId;
     }
 
+    /** Called on each datagen run to register this provider's visuals. */
     protected abstract void addVisuals();
 
+    /** Creates a resource location in this provider's mod namespace. */
     public ResourceLocation modLoc(String path) {
         return ResourceLocation.fromNamespaceAndPath(modId, path);
     }
 
+    /** Creates a resource location in the Minecraft namespace. */
     public ResourceLocation mcLoc(String path) {
         return ResourceLocation.fromNamespaceAndPath("minecraft", path);
     }
 
+    /** Registers a generated header visual; duplicate IDs are rejected. */
     public void header(ResourceLocation id, CtlHeaderVisualBuilder builder) {
         if (headers.put(id, builder) != null) throw new IllegalStateException("Duplicate CTL header visual: " + id);
     }
 
+    /** Registers a generated banner visual; duplicate IDs are rejected. */
     public void banner(ResourceLocation id, CtlBannerVisualBuilder builder) {
         if (banners.put(id, builder) != null) throw new IllegalStateException("Duplicate CTL banner visual: " + id);
     }

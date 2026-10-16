@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Locale;
 import java.util.Objects;
 
+/** Builder for CTL section-header visual JSON generated through datagen. */
 public final class CtlHeaderVisualBuilder implements CtlGeneratedVisual {
     private final ResourceLocation texture;
 
@@ -23,10 +24,12 @@ public final class CtlHeaderVisualBuilder implements CtlGeneratedVisual {
         this.texture = Objects.requireNonNull(texture, "texture");
     }
 
+    /** Creates a header visual using the supplied texture. */
     public static CtlHeaderVisualBuilder header(ResourceLocation texture) {
         return new CtlHeaderVisualBuilder(texture);
     }
 
+    /** Adds sprite-sheet animation metadata. */
     public CtlHeaderVisualBuilder spriteAnimation(CtlSpriteAnimationBuilder spriteAnimation) {
         this.spriteAnimation = Objects.requireNonNull(spriteAnimation, "spriteAnimation");
         return this;
@@ -47,6 +50,7 @@ public final class CtlHeaderVisualBuilder implements CtlGeneratedVisual {
         return this;
     }
 
+    /** Sets independent top and bottom colors for split header text. */
     public CtlHeaderVisualBuilder splitTextColor(String topColor, String bottomColor) {
         this.textTopColor = Objects.requireNonNull(topColor, "topColor");
         this.textBottomColor = Objects.requireNonNull(bottomColor, "bottomColor");

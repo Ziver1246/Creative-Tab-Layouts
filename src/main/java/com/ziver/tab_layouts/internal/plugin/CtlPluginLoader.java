@@ -13,6 +13,10 @@ import java.lang.annotation.ElementType;
 import java.lang.reflect.Constructor;
 import java.util.*;
 
+/**
+ * Discovers annotated plugins, validates metadata, resolves target availability and
+ * PRESET-vs-NATIVE precedence, then registers the selected integrations.
+ */
 public final class CtlPluginLoader {
     private CtlPluginLoader() {}
 

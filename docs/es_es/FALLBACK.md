@@ -1,236 +1,122 @@
-# Fallback pages en Creative Tab Layouts
+# Fallback
 
-Este documento explica el sistema fallback de **Creative Tab Layouts** (CTL).
+El fallback evita que contenido original de una creative tab desaparezca cuando CTL controla su layout pero algunos items no fueron asignados explícitamente.
 
-> Ejemplos de integración: [EXAMPLES.md](./EXAMPLES.md)  
-> Config relacionada: [CONFIG.md](./CONFIG.md)
+## Idea
 
-## Por qué existe fallback
-
-Cuando CTL controla una creative tab, el contenido visible se reconstruye desde páginas y secciones CTL.
-
-Sin fallback, items añadidos por otros mods mediante el sistema vanilla podrían dejar de verse en esa tab.
-
-Fallback existe como red de seguridad para preservar contenido de mods sin integración CTL.
-
-## Qué hace fallback
-
-Fallback detecta items externos presentes en el contenido original de la tab y los coloca al final del layout CTL.
-
-Orden general:
+CTL compara:
 
 ```text
-Overview Page
-Base Pages
-Addon Pages
-Fallback Pages
+items originales de la creative tab
+-
+items reclamados por las páginas CTL
+=
+items no reclamados
 ```
 
-## Cuándo aparece fallback
+Los items no reclamados pueden aparecer al final mediante contenido fallback.
 
-Fallback puede aparecer cuando:
+Desde 1.3.0 esto incluye tanto contenido vanilla como contenido de mods. Minecraft ya no se excluye del fallback.
 
-```text
-- La tab está controlada por CTL.
-- enableFallbackPages está activado.
-- Existen items externos en el contenido original de la tab.
-- Esos items no fueron reclamados por páginas CTL.
-- Esos items no pertenecen al namespace minecraft.
-```
+## Qué significa "reclamado"
 
-Si no hay contenido externo que preservar, no aparece fallback visible.
+CTL construye las páginas declaradas del layout y considera reclamados los `Item` presentes en esas páginas.
 
-## Qué items toma
+El fallback trabaja a nivel de `Item`, no como un sistema completo de identidad de `ItemStack` con components. Por ello no debe usarse como sustituto de una integración CTL intencional.
 
-Toma items externos añadidos a la tab original mediante mecanismos vanilla o eventos normales de creative tabs.
+## Modos
 
-Ejemplo:
-
-```text
-examplemod:ruby aparece en minecraft:ingredients.
-CTL controla minecraft:ingredients.
-examplemod:ruby no está en ninguna página CTL.
-→ fallback puede mostrar examplemod:ruby.
-```
-
-## Qué items ignora
-
-Ignora:
-
-```text
-- Items del namespace minecraft.
-- Items ya reclamados por CTL.
-- Duplicados por Item.
-- Stacks vacíos.
-```
-
-## Claimed items
-
-Un item se considera reclamado si aparece en páginas normales o addon pages de CTL.
-
-La comparación se hace por `Item`, no por `ItemStack` exacto.
-
-Consecuencia:
-
-```text
-Si CTL ya muestra examplemod:ruby una vez,
-fallback no añade otro examplemod:ruby aunque el stack original tenga otro nombre, count o components.
-```
-
-Esto evita duplicados, pero significa que fallback no es un sistema de preservación exacta de stacks complejos.
-
-## Agrupación por mod
-
-Los items fallback se agrupan por namespace del item.
-
-```text
-examplemod:ruby       → examplemod
-anothermod:copper_rod → anothermod
-```
-
-CTL intenta mostrar el nombre público del mod mediante `ModList`. Si no está disponible, usa el mod id.
-
-## Modos de fallback
-
-La implementación actual soporta dos modos.
+La configuración actual ofrece dos modos.
 
 ### BY_MOD_SECTION
 
-Una sola página final llamada `Mods`.
-
-Dentro, CTL crea una section por mod.
+Crea una página final `Mods` y agrupa el contenido no reclamado en secciones por namespace/mod.
 
 ```text
-Fallback Page: Mods
-├─ Section: Example Mod
-├─ Section: Another Mod
-└─ Section: Third Mod
+Mods
+├─ Minecraft
+├─ Create
+├─ Example Mod
+└─ ...
 ```
-
-Es el modo recomendado por defecto porque ocupa menos páginas.
 
 ### BY_MOD_PAGE
 
-Una página final por mod.
+Crea una página fallback independiente por mod/namespace.
 
 ```text
-Fallback Page: Example Mod
-Fallback Page: Another Mod
-Fallback Page: Third Mod
+Minecraft
+Create
+Example Mod
+...
 ```
 
-Puede ser más claro cuando un mod tiene muchos items.
+## Orden
 
-## Config
+El fallback se añade después de las páginas CTL declaradas.
 
-Opciones relevantes:
+No participa como una página base o addon creada manualmente por plugins.
 
-```text
-enableFallbackPages = true / false
-fallbackMode = BY_MOD_SECTION / BY_MOD_PAGE
-```
+## Fallback y layouts reales
 
-`fallbackMode` solo tiene efecto si `enableFallbackPages` está activado.
+Fallback es una red de seguridad, no una API para diseñar contenido.
 
-Los cambios aplican en runtime. Reabre el creative inventory si necesitas refrescar la vista.
-
-## Headers visuales para fallback
-
-Las fallback sections también pueden tener headers visuales.
-
-Para una fallback section con id:
-
-```text
-examplemod:fallback/minecraft/ingredients
-```
-
-CTL buscará:
-
-```text
-assets/examplemod/ctl/headers/fallback/minecraft/ingredients.json
-```
-
-Esto permite que un mod personalice su sección fallback en una tab vanilla concreta.
-
-## Fallback no es una API de layout
-
-Fallback es automático.
-
-No expone:
+No ofrece operaciones como:
 
 ```text
 add
 stack
 dynamic
-empty
 section
-addonSection
 priority
-positioning
+addBefore
+addAfter
 ```
 
-Si un mod quiere control completo, debe usar la API CTL:
+Si conoces el contenido que quieres integrar, crea o contribuye a un layout CTL normal.
+
+## Views externas
+
+`CtlViews.getTabView(tabId, registries)` devuelve las páginas CTL declaradas.
+
+Para que el snapshot incluya fallback, usa la sobrecarga que también recibe los items originales de la creative tab:
 
 ```java
-ctx.controlTab(CtlVanillaTabs.INGREDIENTS)
-        .addonPage(id("materials"), page -> {
-            page.section(id("special"), section -> {
-                section.add(Items.DIAMOND);
-                section.stack(() -> customStack());
-                section.dynamic(registries -> createDynamicStacks(registries));
-            });
-        });
+CtlViews.getTabView(tabId, registries, originalItems);
 ```
 
-Regla:
+Las páginas fallback aparecen como:
 
 ```text
-Fallback no define layout.
-Fallback recupera contenido sin integración CTL.
+CtlPageView.Type.FALLBACK
 ```
 
-## Por qué fallback no tiene stack ni dynamic
-
-`stack` y `dynamic` son APIs declarativas. Requieren intención del mod:
+y sus secciones como:
 
 ```text
-qué stack crear
-dónde ponerlo
-con qué prioridad
-si necesita registries
-cómo deduplicarlo
+CtlSectionView.Type.FALLBACK
 ```
 
-Fallback no tiene esa intención. Solo observa el contenido original de la tab y preserva items no reclamados.
+## Limitaciones
 
-Si necesitas `stack` o `dynamic`, escribe un plugin CTL.
+Fallback no conoce la intención del mod que añadió el item.
 
-## Limitaciones importantes
+Por diseño:
 
-Fallback:
+- prioriza no perder contenido;
+- agrupa automáticamente por namespace/mod;
+- no garantiza un layout visual ideal;
+- no sustituye `NATIVE`, `PRESET` o `COMPAT`;
+- puede perder distinción entre variantes si el mismo `Item` ya fue reclamado por el layout.
+
+## Recomendación
+
+Para una integración real:
 
 ```text
-- No garantiza layout bonito.
-- No conoce intención del mod.
-- No preserva necesariamente variantes exactas si el mismo Item ya fue reclamado.
-- No sustituye una integración real.
-- Siempre aparece al final.
+NATIVE → layout oficial del propio mod
+PRESET → integración de respaldo para un mod sin NATIVE
+COMPAT → contribución entre varios mods
 ```
 
-## Vistas externas del layout
-
-`CtlApiExtensions#getTabView(tabId, registries)` devuelve únicamente las páginas declaradas por CTL. La sobrecarga que recibe `originalItems` también puede añadir fallback pages y las expone como `PageType.FALLBACK` con secciones `SectionType.FALLBACK`.
-
-## Recomendación para mods
-
-Si tu mod quiere integrarse bien:
-
-```text
-- Usa @CtlPlugin.
-- Usa contributeTab si la integración debe ser opcional.
-- Usa addonPage para contenido propio.
-- Usa contributePage o contributeSection para integrarte en layouts existentes.
-- No dependas del fallback como integración principal.
-```
-
-Fallback está para que nada importante desaparezca, no para diseñar el layout final.
+Usa fallback únicamente como protección para contenido no asignado.

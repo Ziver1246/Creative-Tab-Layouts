@@ -11,6 +11,13 @@ import org.slf4j.Logger;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Registration context supplied to {@link ICtlPlugin} implementations.
+ *
+ * <p>The context separates layout ownership from contribution. Use {@link #controlTab}
+ * when the plugin owns a tab layout and {@link #contribute} when extending a layout
+ * controlled by another integration.</p>
+ */
 public final class CtlPluginContext {
     private final Logger logger;
 
@@ -91,14 +98,17 @@ public final class CtlPluginContext {
         for (ResourceLocation tabId : tabIds) subtab(tabId, parentTabId);
     }
 
+    /** Logs an informational message using CTL's plugin logger prefix. */
     public void info(String message) {
         logger.info("[CTL Plugin] {}", message);
     }
 
+    /** Logs a warning using CTL's plugin logger prefix. */
     public void warn(String message) {
         logger.warn("[CTL Plugin] {}", message);
     }
 
+    /** Logs an error using CTL's plugin logger prefix. */
     public void error(String message) {
         logger.error("[CTL Plugin] {}", message);
     }

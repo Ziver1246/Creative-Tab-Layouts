@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 
 import java.util.Objects;
 
+/** Tracks the plugin currently registering so CTL can warn about semantically suspicious API usage. */
 public final class CtlPluginValidation {
     private CtlPluginValidation() {}
 

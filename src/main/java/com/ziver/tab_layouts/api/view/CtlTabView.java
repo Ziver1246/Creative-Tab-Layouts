@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/** Immutable resolved snapshot of a CTL-controlled tab and its pages. */
 public record CtlTabView(ResourceLocation id, List<CtlPageView> pages) {
 
     public CtlTabView {

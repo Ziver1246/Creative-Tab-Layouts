@@ -89,22 +89,19 @@ For developers, add CTL as a dependency and use only the documented public API u
 
 ## Documentation
 
-Extended documentation is available in the `docs/` directory:
+Developer documentation is available under [`docs/en_us/`](docs/en_us/):
 
-- [Documentation contents](docs/en_us/DOCS_CONTENT.md)
-- [Concepts](docs/en_us/CONCEPTS.md)
-- [API](docs/en_us/API.md)
-- [Extensions](docs/en_us/EXTENSIONS.md)
+- [Getting Started](docs/en_us/GETTING_STARTED.md)
+- [Plugin System](docs/en_us/PLUGINS.md)
+- [Layouts](docs/en_us/LAYOUTS.md)
 - [Visuals](docs/en_us/VISUALS.md)
-- [Fallback Pages](docs/en_us/FALLBACK.md)
-- [Config](docs/en_us/CONFIG.md)
-- [Examples](docs/en_us/EXAMPLES.md)
-- [AI Preset](docs/en_us/AI_PRESET.md)
-- [Roadmap](docs/en_us/ROADMAP.md)
+- [Fallback](docs/en_us/FALLBACK.md)
+- [Configuration](docs/en_us/CONFIG.md)
+- [Migration and 2.0 Planning](docs/en_us/MIGRATION.md)
 
 Spanish documentation is also available:
 
-- [Documentación en español](docs/es_es/DOCS_CONTENT.md)
+- [Documentación en español](docs/es_es/GETTING_STARTED.md)
 
 ## Public API Scope
 

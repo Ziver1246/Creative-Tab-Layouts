@@ -1,186 +1,92 @@
-# Configuración de Creative Tab Layouts
+# Configuración
 
-Este documento describe las opciones de configuración públicas de **Creative Tab Layouts** (CTL).
+CTL 1.3.0 incluye una pantalla de configuración cliente accesible desde los inventarios creativo y de supervivencia cuando sus botones están habilitados.
 
-> Ejemplos: [EXAMPLES.md](./EXAMPLES.md)  
-> Fallback: [FALLBACK.md](./FALLBACK.md)  
-> Debug visual: [VISUALS.md#debug-visual](./VISUALS.md#debug-visual)
+Las opciones actuales son las siguientes.
 
-## Archivo de config
-
-CTL usa una config cliente de NeoForge.
-
-Las opciones actuales son:
+## Built-in vanilla layouts
 
 ```text
-enableBuiltinVanillaLayouts
-enableSubtabs
-showCreativeConfigButton
-enableDeveloperVisualDebug
-enableFallbackPages
-fallbackMode
+enableBuiltinVanillaLayouts = true
 ```
 
-## enableBuiltinVanillaLayouts
+Activa los layouts vanilla incluidos con CTL.
 
-Default:
+Desactivarlos no desactiva la API de CTL. Plugins externos pueden seguir controlando sus propias tabs.
+
+El cambio se consulta en runtime; si la interfaz ya está abierta puede ser necesario reabrir el inventario creativo.
+
+## Subtabs
 
 ```text
-true
+enableSubtabs = true
 ```
 
-Activa o desactiva los layouts vanilla integrados de CTL.
+Activa la agrupación visual de subtabs en la Creative Inventory.
+
+Cuando está desactivado, las creative tabs registradas siguen existiendo y aparecen como tabs independientes.
+
+## Botón de configuración en creativo
 
 ```text
-true  → CTL organiza las tabs vanilla soportadas.
-false → CTL no aplica sus layouts vanilla builtin.
+showCreativeConfigButton = true
 ```
 
-Esto no desactiva la API CTL.
+Muestra el acceso a configuración de CTL desde el inventario creativo.
 
-Los plugins externos pueden seguir controlando tabs propias o contribuir a tabs controladas por otros plugins.
-
-Cambios:
+## Botón de configuración en supervivencia
 
 ```text
-Aplican en runtime.
-Reabre el creative inventory si necesitas refrescar la vista.
+showSurvivalConfigButton = true
 ```
 
-## enableSubtabs
+Muestra el acceso a configuración de CTL desde el inventario de supervivencia.
 
-Default:
+## Debug visual
 
 ```text
-true
+enableDeveloperVisualDebug = true
 ```
 
-Activa el panel lateral de subtabs y la navegación agrupada. Cuando se desactiva, las subtabs registradas vuelven a mostrarse como creative tabs independientes normales.
+Habilita ayudas de desarrollo relacionadas con headers y banners, como metadata o rutas de recursos cuando el renderer lo permite.
 
-## showCreativeConfigButton
+No forma parte del contrato de layout y puede cambiar como herramienta de desarrollo.
 
-Default:
+## Fallback pages
 
 ```text
-true
+enableFallbackPages = true
 ```
 
-Muestra el botón de configuración de CTL en el creative inventory. Ocultarlo no desactiva CTL ni reinicia sus opciones. Las mismas opciones cliente siguen disponibles en el archivo de config.
+Activa el contenido fallback para items presentes en la creative tab original que no fueron reclamados por páginas CTL.
 
-## Pantalla de configuración integrada
+Esto aplica tanto a vanilla como a mods.
 
-El botón del creative inventory abre la pantalla de configuración cliente de CTL. Los cambios se guardan al modificar una opción. Las opciones que dependen de otra, como `fallbackMode`, quedan deshabilitadas visualmente mientras su función principal está desactivada.
+Consulta [FALLBACK.md](./FALLBACK.md) para el comportamiento completo.
 
-## enableDeveloperVisualDebug
-
-Default actual:
+## Fallback mode
 
 ```text
-true
+fallbackMode = BY_MOD_SECTION
 ```
 
-Activa tooltips de debug visual para headers y banners.
-
-Para ver el debug deben cumplirse todas estas condiciones:
-
-```text
-1. Entorno de desarrollo.
-2. enableDeveloperVisualDebug = true.
-3. Mantener Left Alt presionado.
-4. Hacer hover sobre el header o banner.
-```
-
-No basta con hover normal.
-
-El debug visual puede mostrar:
-
-```text
-- id del visual
-- ruta del JSON
-- JSON pretty-printed
-- errores de JSON faltante, vacío, inválido o incompleto
-```
-
-En producción, el debug visual no se muestra aunque la config exista.
-
-Nota para developers: si estás trabajando activamente en visuals, suele ser cómodo poner esta opción en `true` durante desarrollo.
-
-## enableFallbackPages
-
-Default:
-
-```text
-true
-```
-
-Activa o desactiva fallback pages.
-
-```text
-true  → CTL preserva items externos no reclamados.
-false → CTL no genera fallback.
-```
-
-Si se desactiva, items de mods sin integración CTL podrían dejar de verse en tabs controladas.
-
-## fallbackMode
-
-Default:
-
-```text
-BY_MOD_SECTION
-```
-
-Valores:
+Valores actuales:
 
 ```text
 BY_MOD_SECTION
 BY_MOD_PAGE
 ```
 
-### BY_MOD_SECTION
+`BY_MOD_SECTION` crea una página `Mods` con una sección por mod.
 
-Crea una página final llamada `Mods` y agrupa items por mod dentro de sections.
+`BY_MOD_PAGE` crea una página final independiente por mod.
 
-```text
-Mods
-├─ Example Mod
-├─ Another Mod
-└─ Third Mod
-```
+Solo tiene efecto cuando las fallback pages están activadas.
 
-### BY_MOD_PAGE
+## Configuración y API pública
 
-Crea una página final por mod.
+La configuración interna de CTL no forma parte de la nueva API pública estructurada.
 
-```text
-Example Mod
-Another Mod
-Third Mod
-```
+Las integraciones deberían consultar comportamiento efectivo mediante APIs como `CtlViews` cuando corresponda, en vez de depender de campos internos de configuración.
 
-`fallbackMode` solo tiene efecto si `enableFallbackPages` está activado.
-
-## Cambios en runtime
-
-Las opciones principales aplican en runtime.
-
-Recomendación práctica:
-
-```text
-1. Cambia la config.
-2. Cierra el creative inventory si estaba abierto.
-3. Ábrelo de nuevo.
-```
-
-## Qué no cambia la config
-
-La config no cambia:
-
-```text
-- Registro original de creative tabs.
-- Registro de items.
-- Código de plugins CTL.
-- Archivos JSON de visuales.
-```
-
-Solo cambia cómo CTL aplica o muestra layouts y helpers.
+`CtlApiExtensions` conserva temporalmente algunos accesos antiguos por compatibilidad 1.x, pero está deprecated y será eliminado en 2.0.0.

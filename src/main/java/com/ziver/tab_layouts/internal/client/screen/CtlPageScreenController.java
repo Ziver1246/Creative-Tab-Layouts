@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/** Coordinates page navigation, collapsed sections, item rebuilding, and CTL creative-screen overlays. */
 public final class CtlPageScreenController {
 
     private static final int GROUP_OFFSET_X = 0;

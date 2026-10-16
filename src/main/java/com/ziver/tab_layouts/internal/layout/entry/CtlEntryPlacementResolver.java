@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/** Resolves FIRST/NORMAL/BEFORE/AFTER/LAST entry placement into a deterministic linear order. */
 public final class CtlEntryPlacementResolver {
     private CtlEntryPlacementResolver() {}
 

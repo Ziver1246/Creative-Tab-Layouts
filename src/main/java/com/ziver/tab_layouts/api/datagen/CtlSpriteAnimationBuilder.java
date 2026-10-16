@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import java.util.Locale;
 import java.util.Objects;
 
+/** Builder for sprite-sheet animation metadata used by CTL visuals. */
 public final class CtlSpriteAnimationBuilder {
 
     private String layout = "vertical";
@@ -15,6 +16,7 @@ public final class CtlSpriteAnimationBuilder {
 
     private CtlSpriteAnimationBuilder() {}
 
+    /** Creates a builder with vertical layout, one frame, and 8 FPS. */
     public static CtlSpriteAnimationBuilder sprite() {
         return new CtlSpriteAnimationBuilder();
     }
@@ -48,6 +50,7 @@ public final class CtlSpriteAnimationBuilder {
         return layout("grid");
     }
 
+    /** Sets the frame count; the value must be positive. */
     public CtlSpriteAnimationBuilder frames(int frames) {
         if (frames <= 0) throw new IllegalArgumentException("Sprite animation frames must be greater than 0");
 
@@ -55,6 +58,7 @@ public final class CtlSpriteAnimationBuilder {
         return this;
     }
 
+    /** Sets animation FPS; the value must be positive. */
     public CtlSpriteAnimationBuilder fps(int fps) {
         if (fps <= 0) throw new IllegalArgumentException("Sprite animation FPS must be greater than 0");
 
@@ -62,6 +66,7 @@ public final class CtlSpriteAnimationBuilder {
         return this;
     }
 
+    /** Sets grid columns; the value must be positive. */
     public CtlSpriteAnimationBuilder columns(int columns) {
         if (columns <= 0) throw new IllegalArgumentException("Sprite animation columns must be greater than 0");
 
@@ -74,10 +79,12 @@ public final class CtlSpriteAnimationBuilder {
         return this;
     }
 
+    /** Configures continuous animation. */
     public CtlSpriteAnimationBuilder alwaysAnimate() {
         return animateJustOnHover(false);
     }
 
+    /** Configures animation only while hovered. */
     public CtlSpriteAnimationBuilder animateOnHover() {
         return animateJustOnHover(true);
     }

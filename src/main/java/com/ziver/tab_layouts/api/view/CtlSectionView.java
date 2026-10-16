@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 import java.util.Objects;
 
+/** Immutable resolved snapshot of a CTL section and its copied item stacks. */
 public record CtlSectionView(ResourceLocation id, Component title, Type type, List<ItemStack> items, boolean customHeader) {
 
     public CtlSectionView {

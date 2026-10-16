@@ -1,186 +1,92 @@
-# Creative Tab Layouts configuration
+# Configuration
 
-This document describes the public configuration options of **Creative Tab Layouts** (CTL).
+CTL 1.3.0 includes a client configuration screen accessible from both the creative and survival inventories when their buttons are enabled.
 
-> Examples: [EXAMPLES.md](./EXAMPLES.md)  
-> Fallback: [FALLBACK.md](./FALLBACK.md)  
-> Visual debug: [VISUALS.md#visual-debug](./VISUALS.md#visual-debug)
+The current options are listed below.
 
-## Config file
-
-CTL uses a NeoForge client config.
-
-The current options are:
+## Built-in vanilla layouts
 
 ```text
-enableBuiltinVanillaLayouts
-enableSubtabs
-showCreativeConfigButton
-enableDeveloperVisualDebug
-enableFallbackPages
-fallbackMode
+enableBuiltinVanillaLayouts = true
 ```
 
-## enableBuiltinVanillaLayouts
+Enables the vanilla layouts bundled with CTL.
 
-Default:
+Disabling them does not disable the CTL API. External plugins can still control their own tabs.
+
+The setting is checked at runtime; if the interface is already open, reopening the creative inventory may be necessary.
+
+## Subtabs
 
 ```text
-true
+enableSubtabs = true
 ```
 
-Enables or disables CTL's built-in vanilla layouts.
+Enables visual subtab grouping in the Creative Inventory.
+
+When disabled, registered creative tabs still exist and are shown as independent tabs.
+
+## Creative inventory config button
 
 ```text
-true  → CTL organizes the supported vanilla tabs.
-false → CTL does not apply its built-in vanilla layouts.
+showCreativeConfigButton = true
 ```
 
-This does not disable the CTL API.
+Shows the CTL configuration entry point in the creative inventory.
 
-External plugins can still control their own tabs or contribute to tabs controlled by other plugins.
-
-Changes:
+## Survival inventory config button
 
 ```text
-Apply at runtime.
-Reopen the creative inventory if you need to refresh the view.
+showSurvivalConfigButton = true
 ```
 
-## enableSubtabs
+Shows the CTL configuration entry point in the survival inventory.
 
-Default:
+## Visual debug
 
 ```text
-true
+enableDeveloperVisualDebug = true
 ```
 
-Enables the subtab side panel and grouped navigation. When disabled, registered subtabs are shown again as normal independent creative tabs.
+Enables development helpers related to headers and banners, such as metadata or resource paths when supported by the renderer.
 
-## showCreativeConfigButton
+This is not part of the layout contract and may change as a development tool.
 
-Default:
+## Fallback pages
 
 ```text
-true
+enableFallbackPages = true
 ```
 
-Shows the CTL configuration button in the creative inventory. Hiding the button does not disable CTL or reset its options. The same client options remain available in the config file.
+Enables fallback content for items present in the original creative tab that were not claimed by CTL pages.
 
-## In-game configuration screen
+This applies to both vanilla and mod content.
 
-The creative inventory button opens CTL's client configuration screen. Changes are saved when an option is changed. Options that depend on another setting, such as `fallbackMode`, are disabled in the screen while their parent feature is disabled.
+See [FALLBACK.md](./FALLBACK.md) for the complete behavior.
 
-## enableDeveloperVisualDebug
-
-Current default:
+## Fallback mode
 
 ```text
-true
+fallbackMode = BY_MOD_SECTION
 ```
 
-Enables visual debug tooltips for headers and banners.
-
-To see the debug tooltip, all of these conditions must be met:
-
-```text
-1. Development environment.
-2. enableDeveloperVisualDebug = true.
-3. Hold Left Alt.
-4. Hover the header or banner.
-```
-
-Normal hover is not enough.
-
-Visual debug can show:
-
-```text
-- visual id
-- JSON path
-- pretty-printed JSON
-- missing, empty, invalid, or incomplete JSON errors
-```
-
-In production, visual debug is not shown even if the config exists.
-
-Developer note: if you are actively working on visuals, it is usually convenient to keep this option set to `true` during development.
-
-## enableFallbackPages
-
-Default:
-
-```text
-true
-```
-
-Enables or disables fallback pages.
-
-```text
-true  → CTL preserves unclaimed external items.
-false → CTL does not generate fallback.
-```
-
-If disabled, items from mods without CTL integration may stop appearing in controlled tabs.
-
-## fallbackMode
-
-Default:
-
-```text
-BY_MOD_SECTION
-```
-
-Values:
+Current values:
 
 ```text
 BY_MOD_SECTION
 BY_MOD_PAGE
 ```
 
-### BY_MOD_SECTION
+`BY_MOD_SECTION` creates a `Mods` page with one section per mod.
 
-Creates a final page named `Mods` and groups items by mod inside sections.
+`BY_MOD_PAGE` creates one final fallback page per mod.
 
-```text
-Mods
-├─ Example Mod
-├─ Another Mod
-└─ Third Mod
-```
+This setting only has an effect when fallback pages are enabled.
 
-### BY_MOD_PAGE
+## Configuration and public API
 
-Creates one final page per mod.
+CTL's internal configuration is not part of the new structured public API.
 
-```text
-Example Mod
-Another Mod
-Third Mod
-```
+Integrations should query effective behavior through APIs such as `CtlViews` when appropriate instead of depending on internal configuration fields.
 
-`fallbackMode` only has an effect when `enableFallbackPages` is enabled.
-
-## Runtime changes
-
-The main options apply at runtime.
-
-Practical recommendation:
-
-```text
-1. Change the config.
-2. Close the creative inventory if it was open.
-3. Open it again.
-```
-
-## What config does not change
-
-Config does not change:
-
-```text
-- Original creative tab registration.
-- Item registration.
-- CTL plugin code.
-- Visual JSON files.
-```
-
-It only changes how CTL applies or shows layouts and helpers.
+`CtlApiExtensions` temporarily preserves some older configuration accessors for 1.x compatibility, but it is deprecated and will be removed in 2.0.0.

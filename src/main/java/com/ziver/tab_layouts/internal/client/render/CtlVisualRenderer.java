@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.loading.FMLEnvironment;
 
+/** Central renderer for resolved CTL headers, banners, animation state, and visual debug overlays. */
 public final class CtlVisualRenderer {
     private CtlVisualRenderer() {}
 

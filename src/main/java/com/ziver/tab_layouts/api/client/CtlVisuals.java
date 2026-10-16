@@ -16,24 +16,34 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
+/**
+ * Client-only access to CTL's resolved header and banner visuals.
+ *
+ * <p>Rendering methods return {@code false} when CTL cannot render the requested visual,
+ * allowing callers to provide their own fallback rendering.</p>
+ */
 public final class CtlVisuals {
     private CtlVisuals() {}
 
     private static final ResourceLocation DEFAULT_ANIMATION_CONTEXT = CreativeTabLayouts.id("external");
 
+    /** Returns CTL's preferred section-header dimensions. */
     public static CtlVisualSize getPreferredHeaderSize() {
         return new CtlVisualSize(CtlUiLayouts.HEADER_ROW_WIDTH, CtlUiLayouts.HEADER_ROW_HEIGHT);
     }
 
+    /** Returns CTL's preferred overview-banner dimensions. */
     public static CtlVisualSize getPreferredBannerSize() {
         return new CtlVisualSize(CtlUiLayouts.BANNER_WIDTH, CtlUiLayouts.BANNER_HEIGHT);
     }
 
+    /** Returns whether a custom header visual exists for the section ID. */
     public static boolean hasHeaderVisual(ResourceLocation sectionId) {
         Objects.requireNonNull(sectionId, "sectionId");
         return CtlVisualRegistry.hasHeader(sectionId);
     }
 
+    /** Returns whether a custom banner visual exists for the page ID. */
     public static boolean hasBannerVisual(ResourceLocation pageId) {
         Objects.requireNonNull(pageId, "pageId");
         return CtlVisualRegistry.hasBanner(pageId);
@@ -51,6 +61,7 @@ public final class CtlVisuals {
         return renderSectionHeader(graphics, animationContext, tabId, pageIndex, sectionId, x, y, width, height, hovered, mouseX, mouseY, true);
     }
 
+    /** Renders a custom section header using an independent animation context. Returns whether CTL rendered it. */
     public static boolean renderSectionHeader(GuiGraphics graphics, ResourceLocation animationContext, ResourceLocation tabId, int pageIndex, ResourceLocation sectionId, int x, int y, int width, int height, boolean hovered, int mouseX, int mouseY, boolean allowDebug) {
         Objects.requireNonNull(graphics, "graphics");
         Objects.requireNonNull(animationContext, "animationContext");
@@ -78,6 +89,7 @@ public final class CtlVisuals {
         return renderPageBanner(graphics, animationContext, tabId, pageIndex, x, y, width, height, hovered, mouseX, mouseY, true);
     }
 
+    /** Renders a custom overview banner using an independent animation context. Returns whether CTL rendered it. */
     public static boolean renderPageBanner(GuiGraphics graphics, ResourceLocation animationContext, ResourceLocation tabId, int pageIndex, int x, int y, int width, int height, boolean hovered, int mouseX, int mouseY, boolean allowDebug) {
         Objects.requireNonNull(graphics, "graphics");
         Objects.requireNonNull(animationContext, "animationContext");

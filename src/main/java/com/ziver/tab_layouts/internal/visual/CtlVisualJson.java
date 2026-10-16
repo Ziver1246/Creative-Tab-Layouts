@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 
+/** Shared parser helpers for CTL visual JSON resources. */
 public final class CtlVisualJson {
     private static final Gson PRETTY_GSON = new GsonBuilder().setPrettyPrinting().create();
 

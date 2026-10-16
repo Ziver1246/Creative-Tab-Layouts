@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Runtime registry of resolved header and banner visual definitions. */
 public final class CtlVisualRegistry {
     private static final Map<ResourceLocation, CtlHeaderVisual> HEADERS = new HashMap<>();
     private static final Map<ResourceLocation, CtlBannerVisual> BANNERS = new HashMap<>();

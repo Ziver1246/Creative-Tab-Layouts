@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/** Immutable resolved snapshot of a CTL page, including copied entry stacks and ordered sections. */
 public record CtlPageView(ResourceLocation id, Component title, Type type, int index, List<ItemStack> entries, List<CtlSectionView> sections, boolean customBanner) {
 
     public CtlPageView {

@@ -1,42 +1,31 @@
-# Creative Tab Layouts visuals
+# Visuals
 
-This document explains the public visual system of **Creative Tab Layouts** (CTL).
-
-> Examples: [EXAMPLES.md](./EXAMPLES.md)  
-> Reusing visuals in external interfaces: [EXTENSIONS.md](./EXTENSIONS.md)  
-> Datagen API: [API.md#datagen-api](./API.md#datagen-api)
-
-CTL allows associating visual JSON files with layout elements:
+CTL can associate visual resources with layout elements:
 
 ```text
-Overview Page → Banner
+Overview page → Banner
 Section       → Header
 ```
 
-Visuals are loaded from mod assets or resource packs. They are not registered from Java at runtime.
+Visuals are loaded from assets and can also be generated through the public datagen API.
 
-## Visual resolution
+## Resolution by ID
 
-CTL uses the layout `ResourceLocation` to resolve the JSON.
+The element ID determines the JSON path.
 
-```text
-pageId    → banner JSON
-sectionId → header JSON
-```
-
-Overview example:
+Page:
 
 ```java
 tab.overview(ResourceLocation.fromNamespaceAndPath("examplemod", "overview/main"));
 ```
 
-Expected path:
+Looks for:
 
 ```text
 assets/examplemod/ctl/banners/overview/main.json
 ```
 
-Section example:
+Section:
 
 ```java
 page.section(ResourceLocation.fromNamespaceAndPath("examplemod", "materials/gems"), section -> {
@@ -44,107 +33,30 @@ page.section(ResourceLocation.fromNamespaceAndPath("examplemod", "materials/gems
 });
 ```
 
-Expected path:
+Looks for:
 
 ```text
 assets/examplemod/ctl/headers/materials/gems.json
 ```
 
-## Banner
+## Preferred sizes
 
-A **banner** is the visual associated with an overview page.
-
-Rendered size:
+CTL visuals are designed for:
 
 ```text
-162 x 90 px
+Header: 162 x 18
+Banner: 162 x 90
 ```
 
-Equivalent to:
-
-```text
-9 columns x 18 px = 162 px
-5 rows    x 18 px = 90 px
-```
-
-## Header
-
-A **header** is the visual associated with a section.
-
-Rendered size:
-
-```text
-162 x 18 px
-```
-
-Equivalent to:
-
-```text
-9 columns x 18 px = 162 px
-1 row     x 18 px = 18 px
-```
-
-## Paths
-
-Headers:
-
-```text
-assets/<namespace>/ctl/headers/<path>.json
-```
-
-Banners:
-
-```text
-assets/<namespace>/ctl/banners/<path>.json
-```
-
-Example:
-
-```text
-tab_layouts:minecraft/colored_blocks/red_blocks
-```
-
-Expected header:
-
-```text
-assets/tab_layouts/ctl/headers/minecraft/colored_blocks/red_blocks.json
-```
-
-## texture field
-
-Every valid visual needs `texture`.
-
-```json
-{
-  "texture": "examplemod:textures/gui/ctl/headers/gems.png"
-}
-```
-
-The texture is a normal `ResourceLocation`.
-
-Recommended sizes without animation:
-
-```text
-Header: 162 x 18 px
-Banner: 162 x 90 px
-```
-
-The current implementation has no public fields for `source_width`, `source_height`, or high-resolution source size. If you want to use a non-animated texture, make it the expected rendered size.
+The client API exposes these dimensions through `CtlVisuals`.
 
 ## Header JSON
 
-Supported fields:
+`texture` is required.
 
 ```json
 {
   "texture": "examplemod:textures/gui/ctl/headers/gems.png",
-  "sprite_animation": {
-    "layout": "vertical",
-    "frames": 4,
-    "fps": 8,
-    "columns": 2,
-    "animate_just_on_hover": false
-  },
   "hide_text": false,
   "text_color": "#FFFFFFFF",
   "text_top_color": "#FFFFFFFF",
@@ -155,194 +67,45 @@ Supported fields:
 }
 ```
 
-All fields except `texture` are optional.
+Optional fields supported by the public builder:
+
+```text
+sprite_animation
+hide_text
+text_color
+text_top_color
+text_bottom_color
+label_color
+text_shadow
+text_align
+```
+
+`text_align` can be `left`, `center`, or `right`.
 
 ## Banner JSON
 
-Supported fields:
-
 ```json
 {
-  "texture": "examplemod:textures/gui/ctl/banners/main.png",
-  "sprite_animation": {
-    "layout": "horizontal",
-    "frames": 4,
-    "fps": 8,
-    "animate_just_on_hover": false
-  }
+  "texture": "examplemod:textures/gui/ctl/banners/main.png"
 }
 ```
 
-Banners do not have dynamic text. They only use texture and optional sprite animation.
+Banners support a texture and optional `sprite_animation`.
 
-## Color format
+## Sprite animation
 
-CTL uses this format:
-
-```text
-#AARRGGBB
-```
-
-It also accepts:
-
-```text
-#RRGGBB
-```
-
-in which case CTL assumes alpha `FF`.
-
-Examples:
-
-```text
-#FFFFFFFF → opaque white
-#99000000 → black with alpha 99
-#00000000 → fully transparent
-```
-
-If a tool gives you `RRGGBBAA`, convert it to `AARRGGBB`.
-
-Example:
-
-```text
-RRGGBBAA: D429E8FF
-AARRGGBB: FFD429E8
-```
-
-## hide_text
-
-```json
-{
-  "texture": "examplemod:textures/gui/ctl/headers/logo.png",
-  "hide_text": true
-}
-```
-
-When `hide_text` is `true`:
-
-```text
-- The section text is not drawn.
-- The label background is not drawn.
-- Only the texture or sprite is drawn.
-```
-
-Default:
-
-```text
-hide_text = false
-```
-
-`hide_text` only applies to headers.
-
-## text_color
-
-Single color for the text.
-
-```json
-{
-  "text_color": "#FFFFFFFF"
-}
-```
-
-Default:
-
-```text
-text_color = #FFFFFFFF
-```
-
-## text_top_color and text_bottom_color
-
-Enable a vertical color split in the text.
-
-```json
-{
-  "text_top_color": "#FFFFFFFF",
-  "text_bottom_color": "#FFB8B8B8"
-}
-```
-
-They are only used if both fields are present.
-
-If you only define one of them, CTL does not enable the split and uses `text_color`.
-
-## label_color
-
-Color of the dynamic background behind the text.
-
-```json
-{
-  "label_color": "#99000000"
-}
-```
-
-Default:
-
-```text
-label_color = #00000000
-```
-
-If `label_color` is transparent or absent, CTL does not draw the label background.
-
-## text_shadow
-
-Enables vanilla text shadow.
-
-```json
-{
-  "text_shadow": true
-}
-```
-
-Default:
-
-```text
-text_shadow = false
-```
-
-## text_align
-
-Text and label background alignment.
-
-Values:
-
-```text
-left
-center
-right
-```
-
-Default:
-
-```text
-left
-```
-
-Example:
-
-```json
-{
-  "text_align": "center"
-}
-```
-
-## sprite_animation
-
-`sprite_animation` allows using a spritesheet.
-
-Fields:
+Vertical example:
 
 ```json
 {
   "layout": "vertical",
   "frames": 4,
   "fps": 8,
-  "columns": 2,
   "animate_just_on_hover": false
 }
 ```
 
-### layout
-
-Values:
+Layouts available from the public builder:
 
 ```text
 vertical
@@ -350,223 +113,125 @@ horizontal
 grid
 ```
 
-Runtime default:
-
-```text
-vertical
-```
-
-### frames
-
-Total frame count.
-
-Default:
-
-```text
-1
-```
-
-If `frames < 1`, CTL normalizes it to `1`.
-
-### fps
-
-Frames per second.
-
-Runtime default when parsing manual JSON:
-
-```text
-0
-```
-
-In datagen, the builder uses default:
-
-```text
-8
-```
-
-If `fps <= 0` or `frames <= 1`, the animation does not advance.
-
-### columns
-
-Only needed for `layout = grid`.
+For `grid`, specify `columns`.
 
 ```json
 {
   "layout": "grid",
   "frames": 8,
-  "fps": 10,
+  "fps": 8,
   "columns": 4
 }
 ```
 
-CTL calculates rows automatically:
+CTL derives the remaining layout from those values; there is no public `rows` field in the 1.3.0 builder.
+
+## Colors
+
+CTL accepts colors in visual properties as JSON strings. Existing documentation generally uses:
 
 ```text
-rows = ceil(frames / columns)
+#AARRGGBB
+#RRGGBB
 ```
 
-There is no public `rows` field.
+Keep the same format in your resources for compatibility with CTL's parser.
 
-### animate_just_on_hover
+## Datagen
 
-If `true`, the animation only advances while the mouse is over the header/banner.
+Create a provider by extending `CtlVisualProvider`:
 
-```json
-{
-  "animate_just_on_hover": true
+```java
+public final class ExampleCtlVisualProvider extends CtlVisualProvider {
+
+    public ExampleCtlVisualProvider(PackOutput output) {
+        super(output, ExampleMod.MOD_ID);
+    }
+
+    @Override
+    protected void addVisuals() {
+        header("materials/gems", CtlHeaderVisualBuilder.header(
+                modLoc("textures/gui/ctl/headers/gems.png")
+        ));
+
+        banner("overview/main", CtlBannerVisualBuilder.banner(
+                modLoc("textures/gui/ctl/banners/main.png")
+        ));
+    }
 }
 ```
 
-Default:
-
-```text
-false
-```
-
-## Spritesheet layouts
-
-### vertical
-
-Frames stacked vertically.
-
-```text
-frame 0
-frame 1
-frame 2
-frame 3
-```
-
-For a `162 x 18` header with 4 frames:
-
-```text
-total texture: 162 x 72
-```
-
-### horizontal
-
-Frames in one row.
-
-```text
-frame 0 | frame 1 | frame 2 | frame 3
-```
-
-For a `162 x 18` header with 4 frames:
-
-```text
-total texture: 648 x 18
-```
-
-### grid
-
-Frames distributed in columns.
-
-For `frames = 8`, `columns = 4`:
-
-```text
-frame 0 | frame 1 | frame 2 | frame 3
-frame 4 | frame 5 | frame 6 | frame 7
-```
-
-For a `162 x 18` header:
-
-```text
-total texture: 648 x 36
-```
-
-## Visual datagen
-
-`CtlVisualProvider` generates JSON in:
+The provider generates:
 
 ```text
 assets/<namespace>/ctl/headers/<path>.json
 assets/<namespace>/ctl/banners/<path>.json
 ```
 
-Example:
+Registering the same header or banner ID twice in one provider produces an error.
+
+### Header builder
 
 ```java
-public final class ExampleVisualProvider extends CtlVisualProvider {
-    public ExampleVisualProvider(PackOutput output) {
-        super(output, "examplemod");
-    }
-
-    @Override
-    protected void addVisuals() {
-        header(
-                "materials/gems",
-                CtlHeaderVisualBuilder.header(modLoc("textures/gui/ctl/headers/gems.png"))
-                        .splitTextColor("#FFFFFFFF", "#FFB8B8B8")
-                        .labelColor("#99000000")
-                        .textShadow(true)
-                        .left()
-        );
-
-        banner(
-                "overview/main",
-                CtlBannerVisualBuilder.banner(modLoc("textures/gui/ctl/banners/main.png"))
-        );
-    }
-}
+CtlHeaderVisualBuilder.header(texture)
+        .textColor("#FFFFFFFF")
+        .labelColor("#99000000")
+        .textShadow(true)
+        .left();
 ```
 
-## Datagen with sprite
+To hide text entirely:
 
 ```java
-header(
-        "materials/animated",
-        CtlHeaderVisualBuilder.header(modLoc("textures/gui/ctl/headers/animated.png"))
-                .spriteAnimation(CtlSpriteAnimationBuilder.vertical(4, 8))
-                .textColor("#FFFFFFFF")
-                .labelColor("#99000000")
-                .textShadow(true)
-                .left()
+CtlHeaderVisualBuilder.header(texture)
+        .hideText();
+```
+
+### Animation from datagen
+
+```java
+CtlSpriteAnimationBuilder.vertical(4, 8)
+        .animateOnHover();
+```
+
+```java
+CtlHeaderVisualBuilder.header(texture)
+        .spriteAnimation(CtlSpriteAnimationBuilder.horizontal(4, 8).alwaysAnimate());
+```
+
+## Client API for external interfaces
+
+`CtlVisuals` allows CTL visuals to be reused outside the Creative Inventory.
+
+Basic queries:
+
+```java
+CtlVisuals.getPreferredHeaderSize();
+CtlVisuals.getPreferredBannerSize();
+CtlVisuals.hasHeaderVisual(sectionId);
+CtlVisuals.hasBannerVisual(pageId);
+```
+
+It can also render headers and banners for a resolved `tabId` and `pageIndex`.
+
+```java
+boolean rendered = CtlVisuals.renderSectionHeader(
+        graphics,
+        tabId,
+        pageIndex,
+        sectionId,
+        x, y, width, height,
+        hovered,
+        mouseX, mouseY
 );
 ```
 
-Grid:
+The method returns `false` when CTL cannot render the requested visual, allowing the consuming interface to use its own fallback.
 
-```java
-header(
-        "materials/grid_animation",
-        CtlHeaderVisualBuilder.header(modLoc("textures/gui/ctl/headers/grid_animation.png"))
-                .spriteAnimation(CtlSpriteAnimationBuilder.grid(8, 10, 4))
-                .hideText()
-);
-```
+Overloads are available with an independent `animationContext` and with `allowDebug` to control visual debug for that integration.
 
 ## Visual debug
 
-CTL has visual debug for headers and banners.
+CTL configuration includes a visual debug option for development. It may expose metadata and resource paths related to headers and banners.
 
-Required conditions:
-
-```text
-1. Development environment.
-2. enableDeveloperVisualDebug = true.
-3. Hold Left Alt.
-4. Hover the header or banner.
-```
-
-Hover is not enough. It requires **Left Alt + hover**.
-
-Debug can show:
-
-```text
-- visual type
-- id
-- expected path
-- pretty-printed JSON
-- missing, empty, invalid, or incomplete JSON error
-```
-
-Important states:
-
-```text
-Missing JSON     → ERROR: Missing JSON source
-Empty JSON       → INFO: JSON source is empty
-Invalid JSON     → ERROR: Invalid JSON source
-JSON no texture  → INFO: JSON source has no texture field
-Valid JSON       → shows JSON without error
-```
-
-Visual debug is only present in a development environment, so it is not present for the final user.
+Do not depend on debug information as stable API; it is a development tool.

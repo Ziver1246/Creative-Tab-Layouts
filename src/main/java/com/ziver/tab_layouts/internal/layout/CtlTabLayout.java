@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+/** Registration-time model of a controlled tab and implementation of the public owner builder. */
 public final class CtlTabLayout implements CtlTabBuilder {
     private final ResourceLocation tabId;
     private final List<CtlPage> pages = new ArrayList<>();

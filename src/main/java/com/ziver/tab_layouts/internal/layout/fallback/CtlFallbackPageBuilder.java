@@ -14,6 +14,7 @@ import net.neoforged.fml.ModList;
 import java.util.*;
 import java.util.function.Predicate;
 
+/** Builds fallback content from original creative-tab items not claimed by declared CTL pages. */
 public final class CtlFallbackPageBuilder {
     private static final int SECTION_HEADER_SIZE = 9;
 

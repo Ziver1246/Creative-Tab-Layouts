@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Objects;
 
+/** Builder for CTL banner visual JSON generated through datagen. */
 public final class CtlBannerVisualBuilder implements CtlGeneratedVisual {
     private final ResourceLocation texture;
 
@@ -14,10 +15,12 @@ public final class CtlBannerVisualBuilder implements CtlGeneratedVisual {
         this.texture = Objects.requireNonNull(texture, "texture");
     }
 
+    /** Creates a banner visual using the supplied texture. */
     public static CtlBannerVisualBuilder banner(ResourceLocation texture) {
         return new CtlBannerVisualBuilder(texture);
     }
 
+    /** Adds sprite-sheet animation metadata. */
     public CtlBannerVisualBuilder spriteAnimation(CtlSpriteAnimationBuilder spriteAnimation) {
         this.spriteAnimation = Objects.requireNonNull(spriteAnimation, "spriteAnimation");
         return this;

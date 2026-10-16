@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.*;
 
+/** Registry of CTL-controlled tabs and built-in vanilla ownership used by runtime configuration. */
 public final class CtlTabRegistry {
     private CtlTabRegistry() {}
 

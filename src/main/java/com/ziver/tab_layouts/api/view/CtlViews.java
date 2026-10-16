@@ -13,39 +13,51 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
 
+/**
+ * Read-only entry point for querying resolved CTL state.
+ *
+ * <p>Returned views are immutable snapshots and do not expose CTL's internal mutable model.</p>
+ */
 public final class CtlViews {
     private CtlViews() {}
 
+    /** Returns whether CTL currently controls the creative tab. */
     public static boolean isTabControlled(ResourceLocation tabId) {
         Objects.requireNonNull(tabId, "tabId");
         return CtlTabRegistry.isControlled(tabId);
     }
 
+    /** Returns whether the controlled tab has declared CTL pages. */
     public static boolean hasPages(ResourceLocation tabId) {
         Objects.requireNonNull(tabId, "tabId");
         return CtlTabRegistry.hasPages(tabId);
     }
 
+    /** Returns whether the tab is registered as a CTL subtab. */
     public static boolean isSubtab(ResourceLocation tabId) {
         Objects.requireNonNull(tabId, "tabId");
         return CtlSubtabRegistry.isSubtab(tabId);
     }
 
+    /** Returns whether the tab owns one or more CTL subtabs. */
     public static boolean hasSubtabs(ResourceLocation tabId) {
         Objects.requireNonNull(tabId, "tabId");
         return CtlSubtabRegistry.hasSubtabs(tabId);
     }
 
+    /** Returns the immediate parent of a registered subtab, if present. */
     public static Optional<ResourceLocation> getParentTab(ResourceLocation tabId) {
         Objects.requireNonNull(tabId, "tabId");
         return CtlSubtabRegistry.parent(tabId);
     }
 
+    /** Returns the registered child subtabs of the supplied parent tab. */
     public static List<ResourceLocation> getSubtabs(ResourceLocation tabId) {
         Objects.requireNonNull(tabId, "tabId");
         return CtlSubtabRegistry.subtabs(tabId);
     }
 
+    /** Returns the complete subtab group containing the supplied tab, if one exists. */
     public static Optional<CtlSubtabGroupView> getSubtabGroup(ResourceLocation tabId) {
         Objects.requireNonNull(tabId, "tabId");
 
@@ -57,10 +69,12 @@ public final class CtlViews {
         return Optional.of(new CtlSubtabGroupView(parentId, subtabs));
     }
 
+    /** Resolves declared CTL pages only; generated fallback pages require the overload with original items. */
     public static Optional<CtlTabView> getTabView(ResourceLocation tabId, HolderLookup.Provider registries) {
         return getTabView(tabId, registries, List.of());
     }
 
+    /** Resolves a complete tab snapshot, including fallback pages derived from unclaimed original items. */
     public static Optional<CtlTabView> getTabView(ResourceLocation tabId, HolderLookup.Provider registries, List<ItemStack> originalItems) {
         Objects.requireNonNull(tabId, "tabId");
         Objects.requireNonNull(registries, "registries");
@@ -81,6 +95,7 @@ public final class CtlViews {
         return Optional.of(new CtlTabView(tabId, pageViews));
     }
 
+    /** Resolves a declared CTL page by current zero-based page index; generated fallback pages are excluded. */
     public static Optional<CtlPageView> getPageView(ResourceLocation tabId, int pageIndex, HolderLookup.Provider registries) {
         Objects.requireNonNull(tabId, "tabId");
         Objects.requireNonNull(registries, "registries");
