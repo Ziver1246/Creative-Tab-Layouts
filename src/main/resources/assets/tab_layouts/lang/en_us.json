@@ -14,14 +14,17 @@
   "screen.tab_layouts.config.subtabs": "Subtabs",
   "screen.tab_layouts.config.subtabs.tooltip": "Groups registered subtabs in the Creative Inventory. When disabled, they remain normal independent creative tabs.",
 
-  "screen.tab_layouts.config.creative_button": "Creative menu drawer",
-  "screen.tab_layouts.config.creative_button.tooltip": "Shows the organizer access in the creative inventory drawer.",
+  "screen.tab_layouts.config.creative_button": "Creative inventory button",
+  "screen.tab_layouts.config.creative_button.tooltip": "Shows the CTL button in the creative inventory.",
+
+  "screen.tab_layouts.config.survival_button": "Survival inventory button",
+  "screen.tab_layouts.config.survival_button.tooltip": "Shows the CTL button in the survival inventory.",
 
   "screen.tab_layouts.config.fallback_pages": "Fallback pages",
-  "screen.tab_layouts.config.fallback_pages.tooltip": "Preserves unclaimed mod items by adding fallback content to CTL-controlled tabs.",
+  "screen.tab_layouts.config.fallback_pages.tooltip": "Preserves unclaimed items by adding fallback content to CTL-controlled tabs.",
 
   "screen.tab_layouts.config.fallback_mode": "Fallback organization",
-  "screen.tab_layouts.config.fallback_mode.tooltip": "Controls how unclaimed mod items are grouped in fallback content.",
+  "screen.tab_layouts.config.fallback_mode.tooltip": "Controls how unclaimed items are grouped in fallback content.",
 
   "screen.tab_layouts.config.fallback_mode.by_mod_section": "Sections by mod",
   "screen.tab_layouts.config.fallback_mode.by_mod_section.tooltip": "Creates one final page named \"Mods\" with a separate section for each mod.",
@@ -31,6 +34,13 @@
 
   "screen.tab_layouts.config.dev_visual_debug": "Visual debug",
   "screen.tab_layouts.config.dev_visual_debug.tooltip": "Shows developer metadata and debug information for CTL headers and banners.",
+
+  "screen.tab_layouts.config.general_section": "General",
+  "screen.tab_layouts.config.interface_section": "Interface",
+  "screen.tab_layouts.config.fallback_section": "Fallback",
+  "screen.tab_layouts.config.developer_section": "Developer",
+
+
 
 
 

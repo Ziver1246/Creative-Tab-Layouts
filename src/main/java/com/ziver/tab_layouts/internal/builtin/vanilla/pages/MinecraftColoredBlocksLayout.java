@@ -1,11 +1,11 @@
 package com.ziver.tab_layouts.internal.builtin.vanilla.pages;
 
 import com.ziver.tab_layouts.CreativeTabLayouts;
-import com.ziver.tab_layouts.api.CtlVanillaTabs;
 import com.ziver.tab_layouts.api.layout.CtlPageBuilder;
 import com.ziver.tab_layouts.api.plugin.CtlPluginContext;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.raid.Raid;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 
@@ -15,7 +15,7 @@ public final class MinecraftColoredBlocksLayout {
     private MinecraftColoredBlocksLayout() {}
 
     public static void register(CtlPluginContext ctx) {
-        ctx.controlTab(CtlVanillaTabs.COLORED_BLOCKS)
+        ctx.controlTab(CreativeModeTabs.COLORED_BLOCKS.location())
 
                 .page(CreativeTabLayouts.id("minecraft/colored_blocks/neutral"), page -> {
                     page.section(CreativeTabLayouts.id("minecraft/colored_blocks/neutral_blocks"), section -> {

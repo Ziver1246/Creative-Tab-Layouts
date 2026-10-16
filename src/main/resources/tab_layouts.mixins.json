@@ -1,17 +1,18 @@
 {
   "required": true,
-  "package": "com.ziver.tab_layouts.mixins",
+  "package": "com.ziver.tab_layouts.internal.mixins",
   "refmap": "tab_layouts.refmap.json",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "CreativeModeTabMixin"
   ],
   "client": [
-    "CreativeModeInventoryScreenAccessor",
-    "CreativeModeInventoryScreenMixin",
-    "ItemPickerMenuAccessor",
-    "ItemPickerMenuMixin",
-    "ScreenAccessor"
+    "client.CreativeModeInventoryScreenAccessor",
+    "client.CreativeModeInventoryScreenMixin",
+    "client.InventoryScreenMixin",
+    "client.ItemPickerMenuAccessor",
+    "client.ItemPickerMenuMixin",
+    "client.ScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

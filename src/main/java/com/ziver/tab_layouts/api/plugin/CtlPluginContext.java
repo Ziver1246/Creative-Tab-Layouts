@@ -2,6 +2,7 @@ package com.ziver.tab_layouts.api.plugin;
 
 import com.ziver.tab_layouts.api.layout.CtlContributionBuilder;
 import com.ziver.tab_layouts.api.layout.CtlTabBuilder;
+import com.ziver.tab_layouts.internal.plugin.CtlPluginValidation;
 import com.ziver.tab_layouts.internal.registry.CtlSubtabRegistry;
 import com.ziver.tab_layouts.internal.registry.CtlTabRegistry;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +25,7 @@ public final class CtlPluginContext {
      */
     public CtlTabBuilder controlTab(ResourceLocation tabId) {
         Objects.requireNonNull(tabId, "tabId");
+        CtlPluginValidation.controlTab(logger, tabId);
         return CtlTabRegistry.controlTab(tabId);
     }
 
@@ -62,6 +64,7 @@ public final class CtlPluginContext {
         Objects.requireNonNull(tabId, "tabId");
         Objects.requireNonNull(parentTabId, "parentTabId");
 
+        CtlPluginValidation.controlSubtab(logger, tabId, parentTabId);
         CtlSubtabRegistry.register(tabId, parentTabId);
         return CtlTabRegistry.controlTab(tabId);
     }
@@ -85,9 +88,7 @@ public final class CtlPluginContext {
     public void subtabs(ResourceLocation parentTabId, ResourceLocation... tabIds) {
         Objects.requireNonNull(parentTabId, "parentTabId");
         Objects.requireNonNull(tabIds, "tabIds");
-
-        for (ResourceLocation tabId : tabIds)
-            subtab(tabId, parentTabId);
+        for (ResourceLocation tabId : tabIds) subtab(tabId, parentTabId);
     }
 
     public void info(String message) {

@@ -1,15 +1,15 @@
 package com.ziver.tab_layouts.internal.builtin.vanilla.pages;
 
 import com.ziver.tab_layouts.CreativeTabLayouts;
-import com.ziver.tab_layouts.api.CtlVanillaTabs;
 import com.ziver.tab_layouts.api.plugin.CtlPluginContext;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
 
 public final class MinecraftFunctionalBlocksLayout {
     private MinecraftFunctionalBlocksLayout() {}
 
     public static void register(CtlPluginContext ctx) {
-        ctx.controlTab(CtlVanillaTabs.FUNCTIONAL_BLOCKS)
+        ctx.controlTab(CreativeModeTabs.FUNCTIONAL_BLOCKS.location())
 
                 .page(CreativeTabLayouts.id("minecraft/functional_blocks/functional"), page -> {
                     page.section(CreativeTabLayouts.id("minecraft/functional_blocks/light"), section -> {

@@ -1,15 +1,15 @@
 package com.ziver.tab_layouts.internal.builtin.vanilla.pages;
 
 import com.ziver.tab_layouts.CreativeTabLayouts;
-import com.ziver.tab_layouts.api.CtlVanillaTabs;
 import com.ziver.tab_layouts.api.plugin.CtlPluginContext;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
 
 public final class MinecraftRedstoneBlocksLayout {
     private MinecraftRedstoneBlocksLayout() {}
 
     public static void register(CtlPluginContext ctx) {
-        ctx.controlTab(CtlVanillaTabs.REDSTONE_BLOCKS)
+        ctx.controlTab(CreativeModeTabs.REDSTONE_BLOCKS.location())
 
                 .page(CreativeTabLayouts.id("minecraft/redstone_blocks/redstone"), page -> {
                     page.section(CreativeTabLayouts.id("minecraft/redstone_blocks/signal"), section -> {

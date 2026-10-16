@@ -1,11 +1,11 @@
 package com.ziver.tab_layouts.internal.builtin.vanilla.pages;
 
 import com.ziver.tab_layouts.CreativeTabLayouts;
-import com.ziver.tab_layouts.api.CtlVanillaTabs;
 import com.ziver.tab_layouts.api.layout.CtlSectionBuilder;
 import com.ziver.tab_layouts.api.plugin.CtlPluginContext;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.FireworkRocketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -18,7 +18,7 @@ public final class MinecraftCombatLayout {
     private MinecraftCombatLayout() {}
 
     public static void register(CtlPluginContext ctx) {
-        ctx.controlTab(CtlVanillaTabs.COMBAT)
+        ctx.controlTab(CreativeModeTabs.COMBAT.location())
 
                 .page(CreativeTabLayouts.id("minecraft/combat/equipment"), page -> {
                     page.section(CreativeTabLayouts.id("minecraft/combat/equipment"), section -> {

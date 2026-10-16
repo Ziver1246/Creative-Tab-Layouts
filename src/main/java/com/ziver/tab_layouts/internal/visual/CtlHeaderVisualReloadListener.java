@@ -6,7 +6,6 @@ import com.google.gson.JsonParser;
 import com.ziver.tab_layouts.internal.registry.CtlVisualDebugRegistry;
 import com.ziver.tab_layouts.internal.registry.CtlVisualRegistry;
 import com.ziver.tab_layouts.internal.util.CtlVisualPaths;
-import com.ziver.tab_layouts.internal.visual.debug.CtlVisualDebugInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;

@@ -1,20 +1,16 @@
 package com.ziver.tab_layouts.internal.registry;
 
-import com.ziver.tab_layouts.Config;
+import com.ziver.tab_layouts.CtlConfig;
 import com.ziver.tab_layouts.internal.layout.CtlTabLayout;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public final class CtlTabRegistry {
+    private CtlTabRegistry() {}
+
     private static final Map<ResourceLocation, CtlTabLayout> CONTROLLED_TABS = new LinkedHashMap<>();
     private static final Set<ResourceLocation> BUILTIN_VANILLA_TABS = new HashSet<>();
-
-    private CtlTabRegistry() {}
 
     public static CtlTabLayout controlTab(ResourceLocation tabId) {
         Objects.requireNonNull(tabId, "tabId");
@@ -47,10 +43,6 @@ public final class CtlTabRegistry {
     }
 
     private static boolean isEnabled(ResourceLocation tabId) {
-        if (BUILTIN_VANILLA_TABS.contains(tabId) && !Config.ENABLE_BUILTIN_VANILLA_LAYOUTS.get()) {
-            return false;
-        }
-
-        return true;
+        return !BUILTIN_VANILLA_TABS.contains(tabId) || CtlConfig.ENABLE_BUILTIN_VANILLA_LAYOUTS.get();
     }
 }

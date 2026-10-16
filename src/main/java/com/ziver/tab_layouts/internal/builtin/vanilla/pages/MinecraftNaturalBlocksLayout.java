@@ -1,9 +1,9 @@
 package com.ziver.tab_layouts.internal.builtin.vanilla.pages;
 
 import com.ziver.tab_layouts.CreativeTabLayouts;
-import com.ziver.tab_layouts.api.CtlVanillaTabs;
 import com.ziver.tab_layouts.api.layout.CtlPageBuilder;
 import com.ziver.tab_layouts.api.plugin.CtlPluginContext;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 
@@ -11,7 +11,7 @@ public final class MinecraftNaturalBlocksLayout {
     private MinecraftNaturalBlocksLayout() {}
 
     public static void register(CtlPluginContext ctx) {
-        ctx.controlTab(CtlVanillaTabs.NATURAL_BLOCKS)
+        ctx.controlTab(CreativeModeTabs.NATURAL_BLOCKS.location())
 
                 .page(CreativeTabLayouts.id("minecraft/natural_blocks/terrain"), page -> {
                     section(page, "ground",

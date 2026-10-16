@@ -63,7 +63,7 @@ public void register(CtlPluginContext ctx) {
 Imports principales:
 
 ```java
-import com.ziver.tab_layouts.api.CtlVanillaTabs;
+import com.ziver.tab_layouts.api.CreativeModeTabs;
 import net.minecraft.world.item.Items;
 ```
 

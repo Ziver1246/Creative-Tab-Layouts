@@ -1,15 +1,15 @@
 package com.ziver.tab_layouts.internal.builtin.vanilla.pages;
 
 import com.ziver.tab_layouts.CreativeTabLayouts;
-import com.ziver.tab_layouts.api.CtlVanillaTabs;
 import com.ziver.tab_layouts.api.plugin.CtlPluginContext;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
 
 public final class MinecraftSpawnEggsLayout {
     private MinecraftSpawnEggsLayout() {}
 
     public static void register(CtlPluginContext ctx) {
-        ctx.controlTab(CtlVanillaTabs.SPAWN_EGGS)
+        ctx.controlTab(CreativeModeTabs.SPAWN_EGGS.location())
 
                 .page(CreativeTabLayouts.id("minecraft/spawn_eggs/creatures"), page -> {
                     page.section(CreativeTabLayouts.id("minecraft/spawn_eggs/spawners"), section -> {

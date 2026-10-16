@@ -1,9 +1,9 @@
 package com.ziver.tab_layouts.internal.builtin.vanilla.pages;
 
 import com.ziver.tab_layouts.CreativeTabLayouts;
-import com.ziver.tab_layouts.api.CtlVanillaTabs;
 import com.ziver.tab_layouts.api.layout.CtlPageBuilder;
 import com.ziver.tab_layouts.api.plugin.CtlPluginContext;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 
@@ -11,7 +11,7 @@ public final class MinecraftBuildingBlocksLayout {
     private MinecraftBuildingBlocksLayout() {}
 
     public static void register(CtlPluginContext ctx) {
-        ctx.controlTab(CtlVanillaTabs.BUILDING_BLOCKS)
+        ctx.controlTab(CreativeModeTabs.BUILDING_BLOCKS.location())
 
                 .page(CreativeTabLayouts.id("minecraft/building_blocks/wood"), page -> {
                     wood(page, "oak",

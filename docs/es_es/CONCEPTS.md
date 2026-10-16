@@ -363,8 +363,8 @@ No uses:
 
 ```text
 com.ziver.tab_layouts.internal
-com.ziver.tab_layouts.client
-com.ziver.tab_layouts.mixins
+com.ziver.tab_layouts.internal.client
+com.ziver.tab_layouts.internal.mixins
 ```
 
 Esos paquetes no son API estable.

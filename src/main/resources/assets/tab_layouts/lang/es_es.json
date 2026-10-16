@@ -14,14 +14,17 @@
   "screen.tab_layouts.config.subtabs": "Subpestañas",
   "screen.tab_layouts.config.subtabs.tooltip": "Agrupa las subpestañas registradas en el inventario creativo. Al desactivarse, permanecen como pestañas creativas normales e independientes.",
 
-  "screen.tab_layouts.config.creative_button": "Panel lateral del menú creativo",
-  "screen.tab_layouts.config.creative_button.tooltip": "Muestra el acceso al organizador en el panel lateral del inventario creativo.",
+  "screen.tab_layouts.config.creative_button": "Botón del inventario creativo",
+  "screen.tab_layouts.config.creative_button.tooltip": "Muestra el botón de CTL en el inventario creativo.",
+
+  "screen.tab_layouts.config.survival_button": "Botón del inventario de supervivencia",
+  "screen.tab_layouts.config.survival_button.tooltip": "Muestra el botón de CTL en el inventario de supervivencia.",
 
   "screen.tab_layouts.config.fallback_pages": "Páginas de respaldo",
-  "screen.tab_layouts.config.fallback_pages.tooltip": "Conserva los objetos de mods no reclamados añadiendo contenido de respaldo a las pestañas controladas por CTL.",
+  "screen.tab_layouts.config.fallback_pages.tooltip": "Conserva los objetos no reclamados añadiendo contenido de respaldo a las pestañas controladas por CTL.",
 
   "screen.tab_layouts.config.fallback_mode": "Organización de respaldo",
-  "screen.tab_layouts.config.fallback_mode.tooltip": "Controla cómo se agrupan los objetos de mods no reclamados dentro del contenido de respaldo.",
+  "screen.tab_layouts.config.fallback_mode.tooltip": "Controla cómo se agrupan los objetos no reclamados dentro del contenido de respaldo.",
 
   "screen.tab_layouts.config.fallback_mode.by_mod_section": "Secciones por mod",
   "screen.tab_layouts.config.fallback_mode.by_mod_section.tooltip": "Crea una única página final llamada \"Mods\" con una sección separada para cada mod.",
@@ -31,6 +34,11 @@
 
   "screen.tab_layouts.config.dev_visual_debug": "Depuración visual",
   "screen.tab_layouts.config.dev_visual_debug.tooltip": "Muestra metadatos e información de depuración para los encabezados y banners de CTL.",
+
+  "screen.tab_layouts.config.general_section": "General",
+  "screen.tab_layouts.config.interface_section": "Interfaz",
+  "screen.tab_layouts.config.fallback_section": "Respaldo",
+  "screen.tab_layouts.config.developer_section": "Desarrollador",
 
 
 

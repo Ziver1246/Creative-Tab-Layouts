@@ -1,11 +1,11 @@
 package com.ziver.tab_layouts.internal.builtin.vanilla.pages;
 
 import com.ziver.tab_layouts.CreativeTabLayouts;
-import com.ziver.tab_layouts.api.CtlVanillaTabs;
 import com.ziver.tab_layouts.api.layout.CtlSectionBuilder;
 import com.ziver.tab_layouts.api.plugin.CtlPluginContext;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -15,7 +15,7 @@ public final class MinecraftFoodAndDrinksLayout {
     private MinecraftFoodAndDrinksLayout() {}
 
     public static void register(CtlPluginContext ctx) {
-        ctx.controlTab(CtlVanillaTabs.FOOD_AND_DRINKS)
+        ctx.controlTab(CreativeModeTabs.FOOD_AND_DRINKS.location())
 
                 .page(CreativeTabLayouts.id("minecraft/food_and_drinks/fruits_and_vegetables"), page -> {
                     page.section(CreativeTabLayouts.id("minecraft/food_and_drinks/fruits"), section -> {

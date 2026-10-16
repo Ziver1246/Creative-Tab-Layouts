@@ -2,6 +2,7 @@ package com.ziver.tab_layouts.internal.layout;
 
 import com.ziver.tab_layouts.api.layout.CtlDynamicEntries;
 import com.ziver.tab_layouts.api.layout.CtlSectionBuilder;
+import com.ziver.tab_layouts.internal.layout.entry.CtlEntry;
 import com.ziver.tab_layouts.internal.util.CtlLangKeys;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

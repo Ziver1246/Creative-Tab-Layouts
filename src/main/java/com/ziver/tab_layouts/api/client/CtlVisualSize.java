@@ -1,0 +1,9 @@
+package com.ziver.tab_layouts.api.client;
+
+public record CtlVisualSize(int width, int height) {
+
+    public CtlVisualSize {
+        if (width <= 0) throw new IllegalArgumentException("Width must be greater than zero: " + width);
+        if (height <= 0) throw new IllegalArgumentException("Height must be greater than zero: " + height);
+    }
+}

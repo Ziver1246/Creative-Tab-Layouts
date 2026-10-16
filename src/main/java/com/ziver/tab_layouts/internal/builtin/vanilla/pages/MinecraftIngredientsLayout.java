@@ -1,15 +1,15 @@
 package com.ziver.tab_layouts.internal.builtin.vanilla.pages;
 
 import com.ziver.tab_layouts.CreativeTabLayouts;
-import com.ziver.tab_layouts.api.CtlVanillaTabs;
 import com.ziver.tab_layouts.api.plugin.CtlPluginContext;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
 
 public final class MinecraftIngredientsLayout {
     private MinecraftIngredientsLayout() {}
 
     public static void register(CtlPluginContext ctx) {
-        ctx.controlTab(CtlVanillaTabs.INGREDIENTS)
+        ctx.controlTab(CreativeModeTabs.INGREDIENTS.location())
 
                 .page(CreativeTabLayouts.id("minecraft/ingredients/materials"), page -> {
                     page.section(CreativeTabLayouts.id("minecraft/ingredients/resources"), section -> {

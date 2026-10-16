@@ -25,7 +25,7 @@ config="tab_layouts.mixins.json"
 [[dependencies.tab_layouts]]
 modId="neoforge"
 mandatory=true
-versionRange="[21.1.230,)"
+versionRange="[21.1.250,)"
 ordering="NONE"
 side="BOTH"
 

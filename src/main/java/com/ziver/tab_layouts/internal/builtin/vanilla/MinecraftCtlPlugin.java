@@ -1,18 +1,16 @@
 package com.ziver.tab_layouts.internal.builtin.vanilla;
 
-import com.ziver.tab_layouts.api.CtlVanillaTabs;
+import com.ziver.tab_layouts.CreativeTabLayouts;
+import com.ziver.tab_layouts.api.plugin.CtlPlugin;
 import com.ziver.tab_layouts.api.plugin.CtlPluginContext;
+import com.ziver.tab_layouts.api.plugin.CtlPluginType;
 import com.ziver.tab_layouts.api.plugin.ICtlPlugin;
 import com.ziver.tab_layouts.internal.builtin.vanilla.pages.*;
 import com.ziver.tab_layouts.internal.registry.CtlTabRegistry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTabs;
 
+@CtlPlugin(modId = CreativeTabLayouts.MOD_ID, id = "minecraft_builtin", type = CtlPluginType.PRESET, targets = "minecraft")
 public final class MinecraftCtlPlugin implements ICtlPlugin {
-
-    @Override
-    public ResourceLocation getPluginUid() {
-        return ResourceLocation.withDefaultNamespace("minecraft_vanilla_builtin_layouts");
-    }
 
     @Override
     public void register(CtlPluginContext ctx) {
@@ -32,15 +30,15 @@ public final class MinecraftCtlPlugin implements ICtlPlugin {
     }
 
     private static void markBuiltinVanillaTabs() {
-        CtlTabRegistry.markBuiltinVanilla(CtlVanillaTabs.BUILDING_BLOCKS);
-        CtlTabRegistry.markBuiltinVanilla(CtlVanillaTabs.COLORED_BLOCKS);
-        CtlTabRegistry.markBuiltinVanilla(CtlVanillaTabs.NATURAL_BLOCKS);
-        CtlTabRegistry.markBuiltinVanilla(CtlVanillaTabs.FUNCTIONAL_BLOCKS);
-        CtlTabRegistry.markBuiltinVanilla(CtlVanillaTabs.REDSTONE_BLOCKS);
-        CtlTabRegistry.markBuiltinVanilla(CtlVanillaTabs.TOOLS_AND_UTILITIES);
-        CtlTabRegistry.markBuiltinVanilla(CtlVanillaTabs.COMBAT);
-        CtlTabRegistry.markBuiltinVanilla(CtlVanillaTabs.FOOD_AND_DRINKS);
-        CtlTabRegistry.markBuiltinVanilla(CtlVanillaTabs.INGREDIENTS);
-        CtlTabRegistry.markBuiltinVanilla(CtlVanillaTabs.SPAWN_EGGS);
+        CtlTabRegistry.markBuiltinVanilla(CreativeModeTabs.BUILDING_BLOCKS.location());
+        CtlTabRegistry.markBuiltinVanilla(CreativeModeTabs.COLORED_BLOCKS.location());
+        CtlTabRegistry.markBuiltinVanilla(CreativeModeTabs.NATURAL_BLOCKS.location());
+        CtlTabRegistry.markBuiltinVanilla(CreativeModeTabs.FUNCTIONAL_BLOCKS.location());
+        CtlTabRegistry.markBuiltinVanilla(CreativeModeTabs.REDSTONE_BLOCKS.location());
+        CtlTabRegistry.markBuiltinVanilla(CreativeModeTabs.TOOLS_AND_UTILITIES.location());
+        CtlTabRegistry.markBuiltinVanilla(CreativeModeTabs.COMBAT.location());
+        CtlTabRegistry.markBuiltinVanilla(CreativeModeTabs.FOOD_AND_DRINKS.location());
+        CtlTabRegistry.markBuiltinVanilla(CreativeModeTabs.INGREDIENTS.location());
+        CtlTabRegistry.markBuiltinVanilla(CreativeModeTabs.SPAWN_EGGS.location());
     }
 }

@@ -1,7 +1,6 @@
 package com.ziver.tab_layouts.internal.builtin.vanilla.pages;
 
 import com.ziver.tab_layouts.CreativeTabLayouts;
-import com.ziver.tab_layouts.api.CtlVanillaTabs;
 import com.ziver.tab_layouts.api.layout.CtlSectionBuilder;
 import com.ziver.tab_layouts.api.plugin.CtlPluginContext;
 import net.minecraft.core.Holder;
@@ -18,7 +17,7 @@ public final class MinecraftToolsAndUtilitiesLayout {
     private MinecraftToolsAndUtilitiesLayout() {}
 
     public static void register(CtlPluginContext ctx) {
-        ctx.controlTab(CtlVanillaTabs.TOOLS_AND_UTILITIES)
+        ctx.controlTab(CreativeModeTabs.TOOLS_AND_UTILITIES.location())
 
                 .page(CreativeTabLayouts.id("minecraft/tools_and_utilities/tools"), page -> {
                     page.section(CreativeTabLayouts.id("minecraft/tools_and_utilities/tool_sets"), section -> {

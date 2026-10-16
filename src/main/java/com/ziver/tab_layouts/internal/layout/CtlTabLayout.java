@@ -14,9 +14,7 @@ import java.util.function.Consumer;
 public final class CtlTabLayout implements CtlTabBuilder {
     private final ResourceLocation tabId;
     private final List<CtlPage> pages = new ArrayList<>();
-
     private long nextInsertionOrder = 0L;
-    private CtlPageOrderMode pageOrderMode = CtlPageOrderMode.DEFAULT;
 
     public CtlTabLayout(ResourceLocation tabId) {
         this.tabId = Objects.requireNonNull(tabId, "tabId");
@@ -155,7 +153,7 @@ public final class CtlTabLayout implements CtlTabBuilder {
     }
 
     public List<CtlPage> orderedPages() {
-        return CtlPageOrderResolver.order(tabId, pages, pageOrderMode);
+        return CtlPageOrderResolver.order(pages);
     }
 
     public List<CtlPage> pagesOfType(CtlPageType type) {
@@ -177,13 +175,5 @@ public final class CtlTabLayout implements CtlTabBuilder {
         }
 
         return ordered.get(Math.floorMod(index, ordered.size()));
-    }
-
-    public CtlPageOrderMode pageOrderMode() {
-        return pageOrderMode;
-    }
-
-    public void setPageOrderMode(CtlPageOrderMode pageOrderMode) {
-        this.pageOrderMode = Objects.requireNonNull(pageOrderMode, "pageOrderMode");
     }
 }

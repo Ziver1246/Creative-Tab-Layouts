@@ -1,6 +1,6 @@
 package com.ziver.tab_layouts.internal.registry;
 
-import com.ziver.tab_layouts.internal.visual.debug.CtlVisualDebugInfo;
+import com.ziver.tab_layouts.internal.visual.CtlVisualDebugInfo;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
